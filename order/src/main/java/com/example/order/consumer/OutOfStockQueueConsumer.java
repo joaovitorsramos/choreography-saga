@@ -17,7 +17,7 @@ public class OutOfStockQueueConsumer {
 
 	@RabbitListener(queues = OrderService.OUT_OF_STOCK_QUEUE_NAME)
 	public void receive(@Payload Order order) {
-		order.setStatus(OrderStatus.CANCELED);
+		order.setStatus(OrderStatus.REJECTED);
 		orderService.updateOrder(order);
 	}
 

@@ -30,7 +30,7 @@ public class OrderService {
 	private Queue pendingOrderQueue = new Queue(ORDER_CREATED_QUEUE_NAME, true);
 
 	public Order createOrder(Order order) {
-		order.setStatus(OrderStatus.PENDING);
+		order.setStatus(OrderStatus.APPROVAL_PENDING);
 		logger.info("saving order {}", order);
 		order = orderRepository.save(order);
 		logger.info("publishing order {} to queue {}", order, pendingOrderQueue.getName());
