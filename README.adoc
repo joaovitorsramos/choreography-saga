@@ -1,2 +1,82 @@
 # choreography-saga
 choreography saga demo
+
+
+= Choreophy SAGA Pattern and Event Sourcing Pattern Project
+:toc:
+
+== Getting started 
+
+=== Install Java 11
+
+	brew tap AdoptOpenJDK/openjdk
+	brew cask install adoptopenjdk11
+	which java
+	
+=== Instal Maven3
+
+ 	brew install maven
+ 	mvn --version
+	
+=== Install Docker Desktop for Mac and 
+
+https://docs.docker.com/docker-for-mac/install/ + 
+...and setup kubernetes https://docs.docker.com/docker-for-mac/#kubernets
+
+Verify docker installation
+ 
+	docker -v
+
+=== SpringToolSuite4/Eclipse Plugins (Optional)
+
+https://marketplace.eclipse.org/content/asciidoctor-editor
+
+http://marketplace.eclipse.org/content/eclipse-docker-tooling +
+To activate: Window > Show View > Other... (Docker Explorer)
+
+Optional: +
+https://marketplace.eclipse.org/content/yaml-editor
+
+=== Install Lombok
+
+download available from: https://projectlombok.org
+
+	java -jar lombok.jar
+
+== Build and Test using Maven
+
+. Run application:
+
+	mvn spring-boot:run
+
+. Test application
+
+	curl -s localhost:8080/2 | pjson
+
+== Create Queues in RabbitMQ
+
+. Run RabbitMQ 
+
+	rabbitmq-server 
+
+. Open the web interface of RabbitMQ at http://localhost:15672/#/queues 
+. Create the following queues:
+
+* orderCreated
+* stockUpdated
+* outOfStock	
+
+. Test application
+
+	curl -s localhost:8080/search?lon=-46.739716&lat=-23.525636&radius=2000 | pjson	
+	
+== Spring Boot and H2 Magic
+
+. H2 provides a web interface called H2 Console to see the data. Let’s enable h2 console in the `application.properties`.
+
+	spring.h2.console.enabled=true
+
+When you reload the application, you can launch up H2 Console at http://localhost:8080/h2-console.
+
+CAUTION: If you are unable to see the tables... + 
+Usually, the table’s are created but the url used in H2 GUI Console is wrong. Change the database url to *jdbc:h2:mem:testdb*
