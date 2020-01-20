@@ -14,8 +14,7 @@ import lombok.NoArgsConstructor;
 public class Stock {
 	@Id
 	private String sku;
-
 	private Integer amount = 0;
-	private String BranchId;
+	private String branchId;
 
 }
