@@ -39,7 +39,7 @@ public class OrderService {
 	}
 
 	public Order updateOrder(Order order) {
-		logger.info("saving order {}", order);
+		logger.info("updating order {}", order);
 		return orderRepository.save(order);
 	}
 
