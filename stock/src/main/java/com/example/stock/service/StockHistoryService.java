@@ -42,7 +42,7 @@ public class StockHistoryService {
 	
 	@Transactional(propagation=Propagation.REQUIRED)
 	public Stock saveStockHistory(StockHistory stockHistory) {
-		logger.info("saving stock {}", stockHistory);
+		logger.info("saving stockHistory {}", stockHistory);
 		stockHistory = stockHistoryRepository.save(stockHistory);
 		Stock stock = new Stock(stockHistory.getSku(),stockHistory.getAmount(),stockHistory.getBranchId());
 		stock = stockService.saveStock(stock);
@@ -55,6 +55,7 @@ public class StockHistoryService {
 		order.getOrderItems().stream()
 				.forEach((s) -> {
 					StockHistory stockHistory = new StockHistory(s.getSku(), -s.getAmount(), s.getBranchId());
+					logger.info("saving stockHistory {}", stockHistory);
 					stockHistoryRepository.save(stockHistory);
 					Stock stock = new Stock(s.getSku(),-s.getAmount(),s.getBranchId());
 					stock = stockService.saveStock(stock);
