@@ -17,12 +17,14 @@ public class OrderCreatedQueueConsumer {
 	
 	@Autowired
 	StockHistoryService stockHistoryService;
-
+  
 	@RabbitListener(queues = StockService.ORDER_CREATED_QUEUE_NAME)
 	public void receive(@Payload Order order) {
+		
 		try {
 		stockHistoryService.processOrder(order);
 		}catch(Exception e){
+			System.out.println(e.getMessage()); 
 			
 		}
 	}

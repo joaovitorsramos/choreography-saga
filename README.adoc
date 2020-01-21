@@ -16,14 +16,6 @@
  	brew install maven
  	mvn --version
 	
-=== Install Docker Desktop for Mac and 
-
-https://docs.docker.com/docker-for-mac/install/ + 
-...and setup kubernetes https://docs.docker.com/docker-for-mac/#kubernets
-
-Verify docker installation
- 
-	docker -v
 
 === SpringToolSuite4/Eclipse Plugins (Optional)
 
