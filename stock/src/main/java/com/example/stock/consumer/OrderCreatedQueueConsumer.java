@@ -1,5 +1,7 @@
 package com.example.stock.consumer;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.Payload;
@@ -12,6 +14,8 @@ import com.example.stock.service.StockService;
 @Component
 public class OrderCreatedQueueConsumer {
 
+	Logger logger = LoggerFactory.getLogger(StockService.class);
+	
 	@Autowired
 	StockService stockService;
 	
@@ -24,8 +28,7 @@ public class OrderCreatedQueueConsumer {
 		try {
 		stockHistoryService.processOrder(order);
 		}catch(Exception e){
-			System.out.println(e.getMessage()); 
-			
+			logger.info(e.toString());
 		}
 	}
 
