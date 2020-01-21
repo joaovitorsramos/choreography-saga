@@ -64,7 +64,7 @@ public class StockHistoryService {
 			rabbitTemplate.convertAndSend(stockUpdatedQueue.getName(), order);
 		} catch (OutOfStockException e) {
 			rabbitTemplate.convertAndSend(outOfStockQueue.getName(), order);
-			logger.info("Exception {}", e.toString());
+			logger.info(e.toString());
 		}
 
 	}

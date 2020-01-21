@@ -1,5 +1,3 @@
-# choreography-saga
-choreography saga demo
 
 
 = Choreophy SAGA Pattern and Event Sourcing Pattern Project
