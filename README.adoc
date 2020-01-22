@@ -53,7 +53,7 @@ download available from: https://projectlombok.org
 == Test application
 
 === Create Stock Items 
-1.	First populate the stock with 100 items of aspirin
+1.	First, fill the stock with 100 items of aspirin
   
 	curl --location --request PUT 'http://localhost:8081/stock' \
 	--header 'Content-Type: application/json' \
@@ -64,7 +64,7 @@ download available from: https://projectlombok.org
 	    }'
 	    
     
-2. Then do the same for 200 items of ibuprofen 
+2. Then do the same with 200 items of ibuprofen 
 
 	curl --location --request PUT 'http://localhost:8081/stock' \
 	--header 'Content-Type: application/json' \
@@ -104,7 +104,7 @@ download available from: https://projectlombok.org
 
 . The order status returned should be "*APPROVAL_PENDING*".
 
-. Now find the order
+. Now find the order by its id
 
 	curl --location --request GET 'http://localhost:8080/orders/5555' \
 	--header 'Content-Type: application/json' \
@@ -152,7 +152,7 @@ download available from: https://projectlombok.org
 
 	spring.h2.console.enabled=true
 
-When you reload the application, you can launch up H2 Console at http://localhost:8080/h2-console.
+When you reload the application, you can launch up H2 Consoles at http://localhost:8080/h2-console (order) and http://localhost:8081/h2-console (stock).
 
 CAUTION: If you are unable to see the tables... + 
 Usually, the table’s are created but the url used in H2 GUI Console is wrong. Change the database url to *jdbc:h2:mem:testdb*
