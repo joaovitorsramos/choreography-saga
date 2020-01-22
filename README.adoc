@@ -54,6 +54,7 @@ download available from: https://projectlombok.org
 
 === Create Stock Items 
 .	First populate the stock with 100 items of aspirin
+---
 
 curl --location --request PUT 'http://localhost:8081/stock' \
 --header 'Content-Type: application/json' \
@@ -62,6 +63,8 @@ curl --location --request PUT 'http://localhost:8081/stock' \
         "amount": "100",
         "branchId": "Paulista"
     }'
+    
+---
     
 . Then do the same for 200 items of ibupofren 
 
