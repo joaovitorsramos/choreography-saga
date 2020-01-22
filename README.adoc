@@ -53,6 +53,7 @@ download available from: https://projectlombok.org
 == Test application
 
 === Create Stock Items 
+.	First populate the stock with 100 items of aspirin-teste
 
 ---
 
@@ -66,7 +67,7 @@ curl --location --request PUT 'http://localhost:8081/stock' \
     
 ---
     
-. Then do the same for 200 items of ibupofren 
+. Then do the same for 200 items of ibuprofen 
 
 curl --location --request PUT 'http://localhost:8081/stock' \
 --header 'Content-Type: application/json' \
