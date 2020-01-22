@@ -18,7 +18,7 @@ import com.example.stock.repository.StockHistoryRepository;
 @Service
 public class StockHistoryService {
 
-	Logger logger = LoggerFactory.getLogger(StockService.class);
+	Logger logger = LoggerFactory.getLogger(StockHistoryService.class);
 
 	@Autowired
 	private RabbitTemplate rabbitTemplate;

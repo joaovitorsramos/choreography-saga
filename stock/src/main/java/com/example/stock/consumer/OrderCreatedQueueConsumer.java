@@ -14,7 +14,7 @@ import com.example.stock.service.StockService;
 @Component
 public class OrderCreatedQueueConsumer {
 
-	Logger logger = LoggerFactory.getLogger(StockService.class);
+	Logger logger = LoggerFactory.getLogger(OrderCreatedQueueConsumer.class);
 	
 	@Autowired
 	StockService stockService;
@@ -24,7 +24,7 @@ public class OrderCreatedQueueConsumer {
   
 	@RabbitListener(queues = StockService.ORDER_CREATED_QUEUE_NAME)
 	public void receive(@Payload Order order) {
-		
+		logger.info("Message {} received in the queue {}",order,StockService.ORDER_CREATED_QUEUE_NAME);
 		try {
 		stockHistoryService.processOrder(order);
 		}catch(Exception e){
