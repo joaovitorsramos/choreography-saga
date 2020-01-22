@@ -53,9 +53,9 @@ download available from: https://projectlombok.org
 == Test application
 
 === Create Stock Items 
-.	First populate the stock with 100 items of aspirin-teste
+.	First populate the stock with 100 items of aspirin
 
----
+---------
 
 curl --location --request PUT 'http://localhost:8081/stock' \
 --header 'Content-Type: application/json' \
@@ -65,9 +65,12 @@ curl --location --request PUT 'http://localhost:8081/stock' \
         "branchId": "Paulista"
     }'
     
----
+---------
+
     
 . Then do the same for 200 items of ibuprofen 
+
+---------
 
 curl --location --request PUT 'http://localhost:8081/stock' \
 --header 'Content-Type: application/json' \
@@ -76,11 +79,14 @@ curl --location --request PUT 'http://localhost:8081/stock' \
         "amount": "200",
         "branchId": "Brooklin"
     }'
+---------
+
     
 === Create Orders
 
 . Create an order with 10 items of aspirin and 10 items of ibuprofen
 
+---------
 curl --location --request POST 'http://localhost:8080/orders' \
 --header 'Content-Type: application/json' \
 --data-raw '{
@@ -101,19 +107,24 @@ curl --location --request POST 'http://localhost:8080/orders' \
         	}
         ]
     }'
+---------
 
 . The order status returned should be "APPROVAL_PENDING"
 
 . Now find the order
 
+---------
 curl --location --request GET 'http://localhost:8080/orders/5555' \
 --header 'Content-Type: application/json' \
 --data-raw ''
+---------
+
 
 . The order status returned should be "APPROVED"
 
 . Create a second order with 200 items of aspirin and 10 items of ibuprofen
 
+---------
 curl --location --request POST 'http://localhost:8080/orders' \
 --header 'Content-Type: application/json' \
 --data-raw '{
@@ -134,12 +145,15 @@ curl --location --request POST 'http://localhost:8080/orders' \
         	}
         ]
     }'
-    
+---------
+ 
 . Find the second order
 
+---------
 curl --location --request GET 'http://localhost:8080/orders/7777' \
 --header 'Content-Type: application/json' \
 --data-raw ''
+---------
 
 . The returned status should be "REJECTED
 
