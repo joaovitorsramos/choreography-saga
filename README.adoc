@@ -53,109 +53,98 @@ download available from: https://projectlombok.org
 == Test application
 
 === Create Stock Items 
-.	First populate the stock with 100 items of aspirin
-
----------
-
-curl --location --request PUT 'http://localhost:8081/stock' \
---header 'Content-Type: application/json' \
---data-raw '{
-        "sku": "123_aspirin",
-        "amount": "100",
-        "branchId": "Paulista"
-    }'
+1.	First populate the stock with 100 items of aspirin
+  
+	curl --location --request PUT 'http://localhost:8081/stock' \
+	--header 'Content-Type: application/json' \
+	--data-raw '{
+	        "sku": "123_aspirin",
+	        "amount": "100",
+	        "branchId": "Paulista"
+	    }'
+	    
     
----------
+2. Then do the same for 200 items of ibuprofen 
 
-    
-. Then do the same for 200 items of ibuprofen 
+	curl --location --request PUT 'http://localhost:8081/stock' \
+	--header 'Content-Type: application/json' \
+	--data-raw '{
+	        "sku": "456_ibuprofen",
+	        "amount": "200",
+	        "branchId": "Brooklin"
+	    }'
 
----------
-
-curl --location --request PUT 'http://localhost:8081/stock' \
---header 'Content-Type: application/json' \
---data-raw '{
-        "sku": "456_ibuprofen",
-        "amount": "200",
-        "branchId": "Brooklin"
-    }'
----------
 
     
 === Create Orders
 
 . Create an order with 10 items of aspirin and 10 items of ibuprofen
 
----------
-curl --location --request POST 'http://localhost:8080/orders' \
---header 'Content-Type: application/json' \
---data-raw '{
-        "orderId": "5555",
-        "customerId": "11111",
-        "walletId": "101010",
-        "orderItems":[
-        	{
-        	"sku": "123_aspirin",
-        	"amount": "10",
-        	"branchId": "Paulista",
-        	"cost": "100"
-        	},{
-        	"sku": "456_ibuprofen",
-        	"amount": "10",
-        	"branchId": "Brooklin",
-        	"cost": "50"
-        	}
-        ]
-    }'
----------
+	curl --location --request POST 'http://localhost:8080/orders' \
+	--header 'Content-Type: application/json' \
+	--data-raw '{
+	        "orderId": "5555",
+	        "customerId": "11111",
+	        "walletId": "101010",
+	        "orderItems":[
+	        	{
+	        	"sku": "123_aspirin",
+	        	"amount": "10",
+	        	"branchId": "Paulista",
+	        	"cost": "100"
+	        	},{
+	        	"sku": "456_ibuprofen",
+	        	"amount": "10",
+	        	"branchId": "Brooklin",
+	        	"cost": "50"
+	        	}
+	        ]
+	    }'
 
-. The order status returned should be "APPROVAL_PENDING"
+
+. The order status returned should be "*APPROVAL_PENDING*".
 
 . Now find the order
 
----------
-curl --location --request GET 'http://localhost:8080/orders/5555' \
---header 'Content-Type: application/json' \
---data-raw ''
----------
+	curl --location --request GET 'http://localhost:8080/orders/5555' \
+	--header 'Content-Type: application/json' \
+	--data-raw ''
 
 
-. The order status returned should be "APPROVED"
+. The order status returned should be "*APPROVED*".
 
 . Create a second order with 200 items of aspirin and 10 items of ibuprofen
 
----------
-curl --location --request POST 'http://localhost:8080/orders' \
---header 'Content-Type: application/json' \
---data-raw '{
-        "orderId": "7777",
-        "customerId": "11111",
-        "walletId": "101010",
-        "orderItems":[
-        	{
-        	"sku": "123_aspirin",
-        	"amount": "200",
-        	"branchId": "Paulista",
-        	"cost": "100"
-        	},{
-        	"sku": "456_ibuprofen",
-        	"amount": "10",
-        	"branchId": "Brooklin",
-        	"cost": "50"
-        	}
-        ]
-    }'
----------
+	curl --location --request POST 'http://localhost:8080/orders' \
+	--header 'Content-Type: application/json' \
+	--data-raw '{
+	        "orderId": "7777",
+	        "customerId": "11111",
+	        "walletId": "101010",
+	        "orderItems":[
+	        	{
+	        	"sku": "123_aspirin",
+	        	"amount": "200",
+	        	"branchId": "Paulista",
+	        	"cost": "100"
+	        	},{
+	        	"sku": "456_ibuprofen",
+	        	"amount": "10",
+	        	"branchId": "Brooklin",
+	        	"cost": "50"
+	        	}
+	        ]
+	    }'
+
  
 . Find the second order
 
----------
-curl --location --request GET 'http://localhost:8080/orders/7777' \
---header 'Content-Type: application/json' \
---data-raw ''
----------
+	curl --location --request GET 'http://localhost:8080/orders/7777' \
+	--header 'Content-Type: application/json' \
+	--data-raw ''
 
-. The returned status should be "REJECTED
+
+. The returned status should be "*REJECTED*".
 
 == Spring Boot and H2 Magic
 
