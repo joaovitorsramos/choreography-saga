@@ -33,9 +33,6 @@ public class OrderItem implements Serializable {
 	private String branchId;
 	private Double cost;
 
-	@ManyToOne
-	@JoinColumn
-	@JsonIgnore
-	private Order order;
+	
 
 }
