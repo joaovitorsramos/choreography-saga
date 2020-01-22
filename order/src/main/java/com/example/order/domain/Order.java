@@ -8,6 +8,7 @@ import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
@@ -27,7 +28,9 @@ public class Order implements Serializable {
 	@Enumerated(EnumType.STRING)
 	private OrderStatus status;
 
-	@OneToMany(cascade = CascadeType.ALL, mappedBy = "order")
+	@OneToMany(cascade = CascadeType.ALL)
+	@JoinColumn(name = "orderId", referencedColumnName = "orderId")
 	private List<OrderItem> orderItems;
+	
 
 }

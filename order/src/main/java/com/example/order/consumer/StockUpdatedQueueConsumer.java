@@ -18,6 +18,7 @@ public class StockUpdatedQueueConsumer {
 	@RabbitListener(queues = OrderService.STOCK_UPDATED_QUEUE_NAME)
 	public void receive(@Payload Order order) {
 		order.setStatus(OrderStatus.APPROVED);
+		System.out.println("essaa fila foi acionada");
 		orderService.updateOrder(order);
 	}
 
