@@ -21,9 +21,6 @@
 
 https://marketplace.eclipse.org/content/asciidoctor-editor
 
-http://marketplace.eclipse.org/content/eclipse-docker-tooling +
-To activate: Window > Show View > Other... (Docker Explorer)
-
 Optional: +
 https://marketplace.eclipse.org/content/yaml-editor
 
@@ -33,15 +30,12 @@ download available from: https://projectlombok.org
 
 	java -jar lombok.jar
 
-== Build and Test using Maven
+== Build each service using Maven
 
-. Run application:
+. Run applications:
 
 	mvn spring-boot:run
 
-. Test application
-
-	curl -s localhost:8080/2 | pjson
 
 == Create Queues in RabbitMQ
 
@@ -56,10 +50,95 @@ download available from: https://projectlombok.org
 * stockUpdated
 * outOfStock	
 
-. Test application
+== Test application
 
-	curl -s localhost:8080/search?lon=-46.739716&lat=-23.525636&radius=2000 | pjson	
-	
+=== Create Stock Items 
+.	First populate the stock with 100 items of aspirin
+
+curl --location --request PUT 'http://localhost:8081/stock' \
+--header 'Content-Type: application/json' \
+--data-raw '{
+        "sku": "123_aspirin",
+        "amount": "100",
+        "branchId": "Paulista"
+    }'
+    
+. Then do the same for 200 items of ibupofren 
+
+curl --location --request PUT 'http://localhost:8081/stock' \
+--header 'Content-Type: application/json' \
+--data-raw '{
+        "sku": "456_ibuprofen",
+        "amount": "200",
+        "branchId": "Brooklin"
+    }'
+    
+=== Create Orders
+
+. Create an order with 10 items of aspirin and 10 items of ibuprofen
+
+curl --location --request POST 'http://localhost:8080/orders' \
+--header 'Content-Type: application/json' \
+--data-raw '{
+        "orderId": "5555",
+        "customerId": "11111",
+        "walletId": "101010",
+        "orderItems":[
+        	{
+        	"sku": "123_aspirin",
+        	"amount": "10",
+        	"branchId": "Paulista",
+        	"cost": "100"
+        	},{
+        	"sku": "456_ibuprofen",
+        	"amount": "10",
+        	"branchId": "Brooklin",
+        	"cost": "50"
+        	}
+        ]
+    }'
+
+. The order status returned should be "APPROVAL_PENDING"
+
+. Now find the order
+
+curl --location --request GET 'http://localhost:8080/orders/5555' \
+--header 'Content-Type: application/json' \
+--data-raw ''
+
+. The order status returned should be "APPROVED"
+
+. Create a second order with 200 items of aspirin and 10 items of ibuprofen
+
+curl --location --request POST 'http://localhost:8080/orders' \
+--header 'Content-Type: application/json' \
+--data-raw '{
+        "orderId": "7777",
+        "customerId": "11111",
+        "walletId": "101010",
+        "orderItems":[
+        	{
+        	"sku": "123_aspirin",
+        	"amount": "200",
+        	"branchId": "Paulista",
+        	"cost": "100"
+        	},{
+        	"sku": "456_ibuprofen",
+        	"amount": "10",
+        	"branchId": "Brooklin",
+        	"cost": "50"
+        	}
+        ]
+    }'
+    
+. Find the second order
+
+curl --location --request GET 'http://localhost:8080/orders/7777' \
+--header 'Content-Type: application/json' \
+--data-raw ''
+
+. The returned status should be "REJECTED
+
 == Spring Boot and H2 Magic
 
 . H2 provides a web interface called H2 Console to see the data. Let’s enable h2 console in the `application.properties`.
