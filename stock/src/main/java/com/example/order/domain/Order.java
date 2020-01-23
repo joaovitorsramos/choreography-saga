@@ -6,9 +6,13 @@ import java.util.List;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
+@NoArgsConstructor 
+@AllArgsConstructor
 public class Order implements Serializable {
 
 	private static final long serialVersionUID = -4375073566026914661L;
