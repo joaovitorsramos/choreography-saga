@@ -55,14 +55,14 @@ public class StockHistoryService {
 				Stock stock = new Stock(s.getSku(), -s.getAmount(), s.getBranchId());
 				stock = stockService.saveStock(stock);
 			});	
-			
+			logger.info("sending message {} to queue {}", order, StockHistoryService.STOCK_UPDATED_QUEUE_NAME);
+			rabbitTemplate.convertAndSend(stockUpdatedQueue.getName(), order);
 		} catch (OutOfStockException e) {
 			rabbitTemplate.convertAndSend(outOfStockQueue.getName(), order);
 			logger.info(e.toString());
-			throw new OutOfStockException();
+			
 		}
-		logger.info("sending message {} to queue {}", order, StockHistoryService.STOCK_UPDATED_QUEUE_NAME);
-		rabbitTemplate.convertAndSend(stockUpdatedQueue.getName(), order);
+		
 		
 	}
 
