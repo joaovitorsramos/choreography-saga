@@ -6,6 +6,7 @@ import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.UnexpectedRollbackException;
 
 import com.example.order.domain.Order;
 import com.example.stock.service.StockHistoryService;
@@ -27,8 +28,8 @@ public class OrderCreatedQueueConsumer {
 		logger.info("Message {} received in the queue {}",order,StockService.ORDER_CREATED_QUEUE_NAME);
 		try {
 		stockHistoryService.processOrder(order);
-		}catch(Exception e){
-			logger.info(e.toString());
+		}catch(UnexpectedRollbackException e){
+			logger.error("Processing Order Transaction Rolled-back ", e); 
 		}
 	}
 
