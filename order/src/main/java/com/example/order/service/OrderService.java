@@ -34,7 +34,6 @@ public class OrderService {
 		logger.info("creating order {}", order);
 		order = orderRepository.save(order);
 		logger.info("publishing message {} to queue {}", order, orderCreateQueue.getName());
-		
 		rabbitTemplate.convertAndSend(orderCreateQueue.getName(), order);
 		return order;
 	}
