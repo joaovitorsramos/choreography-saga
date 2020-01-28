@@ -32,7 +32,8 @@ public class StockService {
 	@Transactional(propagation = Propagation.REQUIRED)
 	public Stock saveStock(Stock stock) {
 
-		Stock currentStock = stockRepository.findById(stock.getSku()).orElse(new Stock());
+		Stock currentStock = stockRepository.findById(stock.getSku()).orElse(Stock.builder().amount(0).build());
+		logger.info("currentStock retrieved from database {}", currentStock);
 		Integer updatedStockAmount = currentStock.getAmount() + stock.getAmount();
 		if (updatedStockAmount < 0) {
 			throw new OutOfStockException();

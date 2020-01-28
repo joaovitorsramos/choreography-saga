@@ -41,6 +41,7 @@ public class StockHistoryService {
 		logger.info("creating record of stockHistory {}", stockHistory);
 		stockHistory = stockHistoryRepository.save(stockHistory);
 		Stock stock = new Stock(stockHistory.getSku(), stockHistory.getAmount(), stockHistory.getBranchId());
+		logger.info("calling stockService.save with stockHistory {}", stockHistory);
 		stock = stockService.saveStock(stock);
 		return stock;
 	}

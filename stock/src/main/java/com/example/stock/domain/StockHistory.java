@@ -12,6 +12,7 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.GenericGenerator;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -19,6 +20,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder (toBuilder = true)
 public class StockHistory {
 
 	@Id
@@ -28,7 +30,7 @@ public class StockHistory {
 	private UUID Id;
 
 	private String sku;
-	private Integer amount = 0;
+	private Integer amount ;
 	private String branchId;
 
 	@CreationTimestamp

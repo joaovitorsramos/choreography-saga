@@ -12,11 +12,11 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Builder
+@Builder (toBuilder = true)
 public class Stock {
 	@Id
 	private String sku;
-	private Integer amount = 0;
+	private Integer amount;
 	private String branchId;
 
 }
