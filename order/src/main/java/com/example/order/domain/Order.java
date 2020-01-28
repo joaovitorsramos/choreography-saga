@@ -13,6 +13,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -21,6 +22,7 @@ import lombok.NoArgsConstructor;
 @Table(name = "order_table")
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder (toBuilder = true)
 public class Order implements Serializable {
 	private static final long serialVersionUID = -4375073566026914661L;
 

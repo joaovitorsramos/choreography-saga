@@ -6,6 +6,7 @@ import static org.mockito.Mockito.doNothing;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
@@ -45,15 +46,22 @@ public class OrderServiceTests {
 			return new Order("1111", "1111", "101010", orderStatus, orderItemsList);
 	}
 
-	/*
 	@Test
 	public void whenInvalidIdOrderShouldNotBeFound() {
-		Mockito.when(orderRepository.findById("AAA")).thenThrow(NullPointerException.class);
-		Mockito.reset(orderRepository);
-		assertThrows(OrderNotFoundException.class, () -> orderRepository.findById("AAA"));
+		Mockito.when(orderRepository.findById("AAA")).thenThrow(OrderNotFoundException.class);
+		assertThrows(OrderNotFoundException.class, () -> orderService.findById("AAA"));
 
 	}
-*/
+
+	@Test
+	public void whenValidIdOrderShouldBeFound() {
+		Order order = Order.builder().orderId("123").walletId("123_peter").customerId("123_peter").build();
+		Order mockOrderReturned = Order.builder().orderId("123").walletId("123_peter").customerId("123_peter").build();
+		Mockito.when(orderRepository.findById("123")).thenReturn(Optional.of(mockOrderReturned));
+		assertEquals(order, orderService.findById("123"));
+
+	}
+
 	@Test
 	public void whenCreateOrderTheOrderStatusShouldBeApprovalPending() {
 		Order order = this.generateOrderForTest(null);
