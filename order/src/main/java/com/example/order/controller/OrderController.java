@@ -1,7 +1,6 @@
 package com.example.order.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -11,7 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.example.order.domain.Order;
 import com.example.order.service.OrderService;
 
-@Controller
+
 @RestController
 public class OrderController {
 
@@ -24,9 +23,10 @@ public class OrderController {
 	}
 
 	@PostMapping("/orders")
-	public Order createOrder(@RequestBody final Order receivedOrder) {
-		return orderService.createOrder(receivedOrder);
+	public Order createOrder(@RequestBody final Order order) {
+		return orderService.createOrder(order);
 
 	}
+	
 
 }

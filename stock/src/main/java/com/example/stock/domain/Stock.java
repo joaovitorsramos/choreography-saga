@@ -4,6 +4,7 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -11,11 +12,11 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder (toBuilder = true)
 public class Stock {
 	@Id
 	private String sku;
-
-	private Integer amount = 0;
-	private String BranchId;
+	private Integer amount;
+	private String branchId;
 
 }

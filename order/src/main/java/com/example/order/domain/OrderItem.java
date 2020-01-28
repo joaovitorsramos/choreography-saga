@@ -7,17 +7,19 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 
 import org.hibernate.annotations.GenericGenerator;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
 public class OrderItem implements Serializable {
 
 	private static final long serialVersionUID = -6681465754935755697L;
@@ -32,10 +34,15 @@ public class OrderItem implements Serializable {
 	private Integer amount;
 	private String branchId;
 	private Double cost;
+	
+	public OrderItem(String sku, Integer amount, String branchId, Double cost) {
+		super();
+		this.sku = sku;
+		this.amount = amount;
+		this.branchId = branchId;
+		this.cost = cost;
+	}
 
-	@ManyToOne
-	@JoinColumn
-	@JsonIgnore
-	private Order order;
+	
 
 }

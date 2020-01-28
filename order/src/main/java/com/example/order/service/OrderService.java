@@ -27,19 +27,19 @@ public class OrderService {
 	public static final String STOCK_UPDATED_QUEUE_NAME = "stockUpdated";
 	public static final String OUT_OF_STOCK_QUEUE_NAME = "outOfStock";
 
-	private Queue pendingOrderQueue = new Queue(ORDER_CREATED_QUEUE_NAME, true);
+	private Queue orderCreateQueue = new Queue(ORDER_CREATED_QUEUE_NAME, true);
 
 	public Order createOrder(Order order) {
-		order.setStatus(OrderStatus.PENDING);
-		logger.info("saving order {}", order);
+		order.setStatus(OrderStatus.APPROVAL_PENDING);
+		logger.info("creating order {}", order);
 		order = orderRepository.save(order);
-		logger.info("publishing order {} to queue {}", order, pendingOrderQueue.getName());
-		rabbitTemplate.convertAndSend(pendingOrderQueue.getName(), order);
+		logger.info("publishing message {} to queue {}", order, orderCreateQueue.getName());
+		rabbitTemplate.convertAndSend(orderCreateQueue.getName(), order);
 		return order;
 	}
 
 	public Order updateOrder(Order order) {
-		logger.info("saving order {}", order);
+		logger.info("updating order {}", order);
 		return orderRepository.save(order);
 	}
 

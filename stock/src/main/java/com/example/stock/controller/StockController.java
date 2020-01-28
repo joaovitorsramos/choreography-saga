@@ -9,22 +9,27 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.stock.domain.Stock;
+import com.example.stock.domain.StockHistory;
+import com.example.stock.service.StockHistoryService;
 import com.example.stock.service.StockService;
 
 @RestController
 public class StockController {
 
 	@Autowired
-	StockService service;
+	StockService stockService;
 
+	@Autowired
+	StockHistoryService stockHistoryService;
+	
 	@GetMapping("/stock/{id}")
 	public Stock findById(@PathVariable final String id) {
-		return service.findById(id);
+		return stockService.findById(id);
 	}
 
 	@RequestMapping(path = "/stock", method = { RequestMethod.PUT, RequestMethod.POST })
-	public Stock save(@RequestBody final Stock stock) {
-		return service.save(stock);
+	public Stock saveStock(@RequestBody final StockHistory stockHistory) {
+		return stockHistoryService.saveStockHistory(stockHistory);
 	}
 
 }
