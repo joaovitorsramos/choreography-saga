@@ -33,6 +33,7 @@ public class OrderCreatedQueueConsumerTest {
 		orderCreatedQueueConsumer.receive(receivedOrder);
 		Mockito.verify(stockHistoryService).processOrder(arguments.capture());
 		assertEquals(OrderStatus.APPROVAL_PENDING, arguments.getValue().getStatus());
+		System.out.println("teste");
 		   
 	}
 }
