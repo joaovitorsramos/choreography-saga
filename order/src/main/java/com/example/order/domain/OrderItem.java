@@ -10,10 +10,14 @@ import javax.persistence.Id;
 
 import org.hibernate.annotations.GenericGenerator;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class OrderItem implements Serializable {
 
 	private static final long serialVersionUID = -6681465754935755697L;
@@ -28,6 +32,14 @@ public class OrderItem implements Serializable {
 	private Integer amount;
 	private String branchId;
 	private Double cost;
+	
+	public OrderItem(String sku, Integer amount, String branchId, Double cost) {
+		super();
+		this.sku = sku;
+		this.amount = amount;
+		this.branchId = branchId;
+		this.cost = cost;
+	}
 
 	
 

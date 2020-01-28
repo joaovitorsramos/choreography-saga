@@ -1,6 +1,5 @@
 package com.example.order.controller;
 
-import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -9,7 +8,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.order.domain.Order;
-import com.example.order.domain.SimpleOrder;
 import com.example.order.service.OrderService;
 
 
@@ -25,18 +23,10 @@ public class OrderController {
 	}
 
 	@PostMapping("/orders")
-	public Order createOrder(@RequestBody final Order receivedOrder) {
-		return orderService.createOrder(receivedOrder);
+	public Order createOrder(@RequestBody final Order order) {
+		return orderService.createOrder(order);
 
 	}
 	
-	
-	@Autowired
-	private RabbitTemplate rabbitTemplate;
-	@PostMapping("/simpleorders")
-	public void simpleorders(@RequestBody final SimpleOrder simpleOrder) {
-			rabbitTemplate.convertAndSend("orderCreated", simpleOrder);	
-
-	}
 
 }
