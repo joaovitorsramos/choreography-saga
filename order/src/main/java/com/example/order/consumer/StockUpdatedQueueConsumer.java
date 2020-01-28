@@ -13,15 +13,15 @@ import com.example.order.service.OrderService;
 
 @Component
 public class StockUpdatedQueueConsumer {
-	
+
 	Logger logger = LoggerFactory.getLogger(StockUpdatedQueueConsumer.class);
-	
+
 	@Autowired
 	OrderService orderService;
 
 	@RabbitListener(queues = OrderService.STOCK_UPDATED_QUEUE_NAME)
 	public void receive(@Payload Order order) {
-		logger.info("Message {} received in the queue {}",order,OrderService.STOCK_UPDATED_QUEUE_NAME);
+		logger.info("Message {} received in the queue {}", order, OrderService.STOCK_UPDATED_QUEUE_NAME);
 		order.setStatus(OrderStatus.APPROVED);
 		orderService.updateOrder(order);
 	}

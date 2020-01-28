@@ -13,7 +13,7 @@ import com.example.order.service.OrderService;
 
 @Component
 public class OutOfStockQueueConsumer {
-	
+
 	Logger logger = LoggerFactory.getLogger(OutOfStockQueueConsumer.class);
 
 	@Autowired
@@ -21,7 +21,7 @@ public class OutOfStockQueueConsumer {
 
 	@RabbitListener(queues = OrderService.OUT_OF_STOCK_QUEUE_NAME)
 	public void receive(@Payload Order order) {
-		logger.info("Message {} received in the queue {}",order,OrderService.OUT_OF_STOCK_QUEUE_NAME);
+		logger.info("Message {} received in the queue {}", order, OrderService.OUT_OF_STOCK_QUEUE_NAME);
 		order.setStatus(OrderStatus.REJECTED);
 		orderService.updateOrder(order);
 	}

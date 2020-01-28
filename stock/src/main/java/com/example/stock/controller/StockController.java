@@ -21,7 +21,7 @@ public class StockController {
 
 	@Autowired
 	StockHistoryService stockHistoryService;
-	
+
 	@GetMapping("/stock/{id}")
 	public Stock findById(@PathVariable final String id) {
 		return stockService.findById(id);

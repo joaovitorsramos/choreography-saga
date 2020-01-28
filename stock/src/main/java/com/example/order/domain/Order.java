@@ -12,7 +12,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
-@NoArgsConstructor 
+@NoArgsConstructor
 @AllArgsConstructor
 @Builder
 public class Order implements Serializable {
@@ -27,7 +27,7 @@ public class Order implements Serializable {
 	private OrderStatus status;
 
 	private List<OrderItem> orderItems;
-	
+
 	public Order(String orderId, String customerId, String walletId, List<OrderItem> orderItems) {
 		super();
 		this.orderId = orderId;

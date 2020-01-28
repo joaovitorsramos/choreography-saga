@@ -39,7 +39,7 @@ public class StockService {
 			throw new OutOfStockException();
 		} else {
 			stock.setAmount(updatedStockAmount);
-			logger.info("saving stock {}", stock);
+			logger.info("saving record {}", stock);
 			stock = stockRepository.save(stock);
 		}
 		return stock;

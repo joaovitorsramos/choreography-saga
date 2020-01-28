@@ -22,7 +22,7 @@ import lombok.NoArgsConstructor;
 @Table(name = "order_table")
 @AllArgsConstructor
 @NoArgsConstructor
-@Builder (toBuilder = true)
+@Builder(toBuilder = true)
 public class Order implements Serializable {
 	private static final long serialVersionUID = -4375073566026914661L;
 
@@ -45,6 +45,5 @@ public class Order implements Serializable {
 		this.walletId = walletId;
 		this.orderItems = orderItems;
 	}
-	
 
 }

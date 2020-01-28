@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.RestController;
 import com.example.order.domain.Order;
 import com.example.order.service.OrderService;
 
-
 @RestController
 public class OrderController {
 
@@ -27,6 +26,5 @@ public class OrderController {
 		return orderService.createOrder(order);
 
 	}
-	
 
 }

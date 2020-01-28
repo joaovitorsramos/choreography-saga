@@ -34,7 +34,7 @@ public class OrderItem implements Serializable {
 	private Integer amount;
 	private String branchId;
 	private Double cost;
-	
+
 	public OrderItem(String sku, Integer amount, String branchId, Double cost) {
 		super();
 		this.sku = sku;
@@ -42,7 +42,5 @@ public class OrderItem implements Serializable {
 		this.branchId = branchId;
 		this.cost = cost;
 	}
-
-	
 
 }

@@ -31,7 +31,7 @@ public class OrderService {
 
 	public Order createOrder(Order order) {
 		order.setStatus(OrderStatus.APPROVAL_PENDING);
-		logger.info("creating order {}", order);
+		logger.info("saving record of {}", order);
 		order = orderRepository.save(order);
 		logger.info("publishing message {} to queue {}", order, orderCreateQueue.getName());
 		rabbitTemplate.convertAndSend(orderCreateQueue.getName(), order);
@@ -39,7 +39,7 @@ public class OrderService {
 	}
 
 	public Order updateOrder(Order order) {
-		logger.info("updating order {}", order);
+		logger.info("updating record {}", order);
 		return orderRepository.save(order);
 	}
 

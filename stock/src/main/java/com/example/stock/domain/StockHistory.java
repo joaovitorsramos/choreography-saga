@@ -20,7 +20,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Builder (toBuilder = true)
+@Builder(toBuilder = true)
 public class StockHistory {
 
 	@Id
@@ -30,13 +30,12 @@ public class StockHistory {
 	private UUID Id;
 
 	private String sku;
-	private Integer amount ;
+	private Integer amount;
 	private String branchId;
 
 	@CreationTimestamp
 	private LocalDateTime timestamp;
-	
-	
+
 	public StockHistory(String sku, int amount, String branchId) {
 		this.sku = sku;
 		this.amount = amount;

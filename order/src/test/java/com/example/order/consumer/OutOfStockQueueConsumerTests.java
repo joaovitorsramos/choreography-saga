@@ -21,10 +21,10 @@ public class OutOfStockQueueConsumerTests {
 
 	@Autowired
 	OutOfStockQueueConsumer outOfStockQueueConsumer;
-	
+
 	@MockBean
 	OrderService orderService;
-	
+
 	@Test
 	public void whenReceiveMessageUpdateOrderWithRejectedStatus() {
 		Order receivedOrder = Order.builder().orderId("123").customerId("123_peter").walletId("123_peter").build();
@@ -32,6 +32,6 @@ public class OutOfStockQueueConsumerTests {
 		outOfStockQueueConsumer.receive(receivedOrder);
 		Mockito.verify(orderService).updateOrder(arguments.capture());
 		assertEquals(OrderStatus.REJECTED, arguments.getValue().getStatus());
-		   
+
 	}
 }

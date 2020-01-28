@@ -8,7 +8,6 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -16,13 +15,13 @@ import lombok.NoArgsConstructor;
 public class OrderItem implements Serializable {
 
 	private static final long serialVersionUID = -6681465754935755697L;
-	
+
 	private UUID orderItemId;
 	private String sku;
 	private Integer amount;
 	private String branchId;
 	private Double cost;
-	
+
 	public OrderItem(String sku, Integer amount, String branchId, Double cost) {
 		super();
 		this.sku = sku;
@@ -31,4 +30,3 @@ public class OrderItem implements Serializable {
 		this.cost = cost;
 	}
 }
-
