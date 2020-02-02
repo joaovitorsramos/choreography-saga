@@ -60,7 +60,7 @@ download available from: https://projectlombok.org
 	--data-raw '{
 	        "sku": "123_aspirin",
 	        "amount": "100",
-	        "branchId": "Paulista"
+	        "branchId": "1212"
 	    }'
 	    
     
@@ -71,7 +71,7 @@ download available from: https://projectlombok.org
 	--data-raw '{
 	        "sku": "456_ibuprofen",
 	        "amount": "200",
-	        "branchId": "Brooklin"
+	        "branchId": "1212"
 	    }'
 
 
@@ -90,12 +90,12 @@ download available from: https://projectlombok.org
 	        	{
 	        	"sku": "123_aspirin",
 	        	"amount": "10",
-	        	"branchId": "Paulista",
+	        	"branchId": "1212",
 	        	"cost": "100"
 	        	},{
 	        	"sku": "456_ibuprofen",
 	        	"amount": "10",
-	        	"branchId": "Brooklin",
+	        	"branchId": "1212",
 	        	"cost": "50"
 	        	}
 	        ]
@@ -125,12 +125,12 @@ download available from: https://projectlombok.org
 	        	{
 	        	"sku": "123_aspirin",
 	        	"amount": "200",
-	        	"branchId": "Paulista",
+	        	"branchId": "1212",
 	        	"cost": "100"
 	        	},{
 	        	"sku": "456_ibuprofen",
 	        	"amount": "10",
-	        	"branchId": "Brooklin",
+	        	"branchId": "1212",
 	        	"cost": "50"
 	        	}
 	        ]

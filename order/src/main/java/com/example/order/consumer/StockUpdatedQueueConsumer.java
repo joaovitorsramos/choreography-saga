@@ -23,7 +23,7 @@ public class StockUpdatedQueueConsumer {
 	public void receive(@Payload Order order) {
 		logger.info("Message {} received in the queue {}", order, OrderService.STOCK_UPDATED_QUEUE_NAME);
 		order.setStatus(OrderStatus.APPROVED);
-		orderService.updateOrder(order);
+		orderService.update(order);
 	}
 
 }

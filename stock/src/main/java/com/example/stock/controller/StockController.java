@@ -29,7 +29,7 @@ public class StockController {
 
 	@RequestMapping(path = "/stock", method = { RequestMethod.PUT, RequestMethod.POST })
 	public Stock saveStock(@RequestBody final StockHistory stockHistory) {
-		return stockHistoryService.saveStockHistory(stockHistory);
+		return stockHistoryService.save(stockHistory);
 	}
 
 }

@@ -12,6 +12,8 @@ import com.example.stock.exceptions.OutOfStockException;
 import com.example.stock.exceptions.StockExceptions;
 import com.example.stock.repository.StockRepository;
 
+import lombok.Synchronized;
+
 @Service
 public class StockService {
 
@@ -25,24 +27,26 @@ public class StockService {
 	StockRepository stockRepository;
 
 	public Stock findById(String id) {
-		return stockRepository.findById(id).orElseThrow(StockExceptions::new);
-
+		synchronized (Stock.class) {
+			return stockRepository.findById(id).orElseThrow(StockExceptions::new);
+		}
 	}
 
 	@Transactional(propagation = Propagation.REQUIRED)
-	public Stock saveStock(Stock stock) {
+	public Stock save(Stock stock) {
+		synchronized (Stock.class) {
 
-		Stock currentStock = stockRepository.findById(stock.getSku()).orElse(Stock.builder().amount(0).build());
-		logger.info("currentStock retrieved from database {}", currentStock);
-		Integer updatedStockAmount = currentStock.getAmount() + stock.getAmount();
-		if (updatedStockAmount < 0) {
-			throw new OutOfStockException();
-		} else {
-			stock.setAmount(updatedStockAmount);
-			logger.info("saving record {}", stock);
-			stock = stockRepository.save(stock);
+			Stock currentStock = stockRepository.findById(stock.getSku()).orElse(Stock.builder().amount(0).build());
+			logger.info("currentStock retrieved from database {}", currentStock);
+			Integer updatedStockAmount = currentStock.getAmount() + stock.getAmount();
+			if (updatedStockAmount < 0) {
+				throw new OutOfStockException();
+			} else {
+				stock.setAmount(updatedStockAmount);
+				logger.info("saving record {}", stock);
+				stock = stockRepository.save(stock);
+			}
+			return stock;
 		}
-		return stock;
 	}
-
 }

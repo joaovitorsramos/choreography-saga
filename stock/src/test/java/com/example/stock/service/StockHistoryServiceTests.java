@@ -54,8 +54,8 @@ public class StockHistoryServiceTests {
 		Stock expectedStockReturned = mockStockReturned.toBuilder().build();
 		
 		Mockito.when(stockHistoryRepository.save(stockHistory)).thenReturn(mockStockHistoryReturned);
-		Mockito.when(stockService.saveStock(any())).thenReturn(mockStockReturned);
-		assertEquals(expectedStockReturned, stockHistoryService.saveStockHistory(stockHistory));
+		Mockito.when(stockService.save(any())).thenReturn(mockStockReturned);
+		assertEquals(expectedStockReturned, stockHistoryService.save(stockHistory));
 	}
 
 	@Test
@@ -78,7 +78,7 @@ public class StockHistoryServiceTests {
 		Stock stock2 = new Stock(orderItemsList.get(1).getSku(), 100-orderItemsList.get(1).getAmount(), orderItemsList.get(1).getBranchId());
 		
 		Mockito.when(stockHistoryRepository.save(any())).thenReturn(stockHistory1).thenReturn(stockHistory2);
-		Mockito.when(stockService.saveStock(any())).thenReturn(stock1).thenReturn(stock2);
+		Mockito.when(stockService.save(any())).thenReturn(stock1).thenReturn(stock2);
 		doNothing().when(rabbitTemplate).convertAndSend(StockHistoryService.STOCK_UPDATED_QUEUE_NAME, order);
 		stockHistoryService.processOrder(order);
 		Mockito.verify(rabbitTemplate).convertAndSend(StockHistoryService.STOCK_UPDATED_QUEUE_NAME, order);
@@ -102,7 +102,7 @@ public class StockHistoryServiceTests {
 		Stock stock1 = new Stock(orderItemsList.get(0).getSku(), 100-orderItemsList.get(0).getAmount(), orderItemsList.get(0).getBranchId());
 		
 		Mockito.when(stockHistoryRepository.save(any())).thenReturn(stockHistory1).thenReturn(stockHistory2);
-		Mockito.when(stockService.saveStock(any())).thenReturn(stock1).thenThrow(OutOfStockException.class);
+		Mockito.when(stockService.save(any())).thenReturn(stock1).thenThrow(OutOfStockException.class);
 		doNothing().when(rabbitTemplate).convertAndSend(StockHistoryService.OUT_OF_STOCK_QUEUE_NAME, order);
 		stockHistoryService.processOrder(order);
 		Mockito.verify(rabbitTemplate).convertAndSend(StockHistoryService.OUT_OF_STOCK_QUEUE_NAME, order);

@@ -30,7 +30,7 @@ public class OutOfStockQueueConsumerTests {
 		Order receivedOrder = Order.builder().orderId("123").customerId("123_peter").walletId("123_peter").build();
 		ArgumentCaptor<Order> arguments = ArgumentCaptor.forClass(Order.class);
 		outOfStockQueueConsumer.receive(receivedOrder);
-		Mockito.verify(orderService).updateOrder(arguments.capture());
+		Mockito.verify(orderService).update(arguments.capture());
 		assertEquals(OrderStatus.REJECTED, arguments.getValue().getStatus());
 
 	}

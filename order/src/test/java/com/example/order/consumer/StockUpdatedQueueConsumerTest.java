@@ -30,7 +30,7 @@ public class StockUpdatedQueueConsumerTest {
 		Order receivedOrder = Order.builder().orderId("123").customerId("123_peter").walletId("123_peter").build();
 		ArgumentCaptor<Order> arguments = ArgumentCaptor.forClass(Order.class);
 		stockUpdatedQueueConsumer.receive(receivedOrder);
-		Mockito.verify(orderService).updateOrder(arguments.capture());
+		Mockito.verify(orderService).update(arguments.capture());
 		assertEquals(OrderStatus.APPROVED, arguments.getValue().getStatus());
 		   
 	}

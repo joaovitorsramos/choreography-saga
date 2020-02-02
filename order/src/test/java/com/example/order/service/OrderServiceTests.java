@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import org.junit.Before;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
@@ -36,14 +37,13 @@ public class OrderServiceTests {
 	@MockBean
 	RabbitTemplate rabbitTemplate;
 
-	public Order generateOrderForTest(OrderStatus orderStatus) {
-		List<OrderItem> orderItemsList = new ArrayList<>();
-		orderItemsList.add(new OrderItem("123_aspirin", 100, "Paulista", 100.00));
-		orderItemsList.add(new OrderItem("456_ibuprofen", 200, "Brooklin", 100.00));
-		if (orderStatus == null)
-			return new Order("1111", "1111", "101010", orderItemsList);
-		else
-			return new Order("1111", "1111", "101010", orderStatus, orderItemsList);
+	private List<OrderItem> orderItemsList = new ArrayList<>();
+
+	@Before
+	public void createOrderItemsList() {
+		orderItemsList.add(new OrderItem("123_aspirin", 100, "123", 100.00));
+		orderItemsList.add(new OrderItem("456_ibuprofen", 200, "123", 100.00));
+
 	}
 
 	@Test
@@ -64,19 +64,22 @@ public class OrderServiceTests {
 
 	@Test
 	public void whenCreateOrderTheOrderStatusShouldBeApprovalPending() {
-		Order order = this.generateOrderForTest(null);
-		Order orderMock = this.generateOrderForTest(OrderStatus.APPROVAL_PENDING);
+		Order order = Order.builder().orderId("123").walletId("123_peter").customerId("123_peter")
+				.orderItems(orderItemsList).build();
+		Order orderMock = Order.builder().orderId("123").walletId("123_peter").customerId("123_peter")
+				.orderItems(orderItemsList).status(OrderStatus.APPROVAL_PENDING).build();
 		Mockito.when(orderRepository.save(order)).thenReturn(orderMock);
 		doNothing().when(rabbitTemplate).convertAndSend(OrderService.ORDER_CREATED_QUEUE_NAME, order);
-		Order orderReturned = orderService.createOrder(order);
+		Order orderReturned = orderService.create(order);
 		assertEquals(orderReturned, orderMock);
 	}
 
 	@Test
 	public void whenUpdatingOrderTheOrderReturnedShouldBeTheSame() {
-		Order order = this.generateOrderForTest(OrderStatus.APPROVED);
+		Order order = Order.builder().orderId("123").walletId("123_peter").customerId("123_peter")
+				.orderItems(orderItemsList).status(OrderStatus.APPROVED).build();
 		Mockito.when(orderRepository.save(order)).thenReturn(order);
-		Order orderReturned = orderService.updateOrder(order);
+		Order orderReturned = orderService.update(order);
 		assertEquals(orderReturned, order);
 	}
 

@@ -37,12 +37,12 @@ public class StockHistoryService {
 	StockHistoryRepository stockHistoryRepository;
 
 	@Transactional(propagation = Propagation.REQUIRED)
-	public Stock saveStockHistory(StockHistory stockHistory) {
+	public Stock save(StockHistory stockHistory) {
 		logger.info("saving record {}", stockHistory);
 		stockHistory = stockHistoryRepository.save(stockHistory);
 		Stock stock = new Stock(stockHistory.getSku(), stockHistory.getAmount(), stockHistory.getBranchId());
 		logger.info("calling stockService.saveStock passing {}", stockHistory);
-		stock = stockService.saveStock(stock);
+		stock = stockService.save(stock);
 		return stock;
 	}
 
@@ -55,7 +55,7 @@ public class StockHistoryService {
 				stockHistoryRepository.save(stockHistory);
 				Stock stock = new Stock(s.getSku(), -s.getAmount(), s.getBranchId());
 				logger.info("calling stockService.saveStock passing {}", stockHistory);
-				stock = stockService.saveStock(stock);
+				stock = stockService.save(stock);
 			});
 			logger.info("sending message {} to queue {}", order, StockHistoryService.STOCK_UPDATED_QUEUE_NAME);
 			rabbitTemplate.convertAndSend(stockUpdatedQueue.getName(), order);

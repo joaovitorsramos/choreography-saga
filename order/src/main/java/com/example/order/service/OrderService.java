@@ -29,7 +29,7 @@ public class OrderService {
 
 	private Queue orderCreateQueue = new Queue(ORDER_CREATED_QUEUE_NAME, true);
 
-	public Order createOrder(Order order) {
+	public Order create(Order order) {
 		order.setStatus(OrderStatus.APPROVAL_PENDING);
 		logger.info("saving record of {}", order);
 		order = orderRepository.save(order);
@@ -38,7 +38,7 @@ public class OrderService {
 		return order;
 	}
 
-	public Order updateOrder(Order order) {
+	public Order update(Order order) {
 		logger.info("updating record {}", order);
 		return orderRepository.save(order);
 	}

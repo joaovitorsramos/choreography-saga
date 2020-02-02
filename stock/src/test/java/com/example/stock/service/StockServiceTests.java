@@ -36,7 +36,7 @@ public class StockServiceTests {
 		Stock stockExpected = stock.toBuilder().amount(101).build();
 		Mockito.when(stockRepository.findById(stock.getSku())).thenReturn(Optional.of(itemInStock));
 		Mockito.when(stockRepository.save(stock)).thenReturn(mockStockReturned);
-		assertEquals(stockExpected, stockService.saveStock(stock));
+		assertEquals(stockExpected, stockService.save(stock));
 
 	}
 
@@ -45,7 +45,7 @@ public class StockServiceTests {
 		Stock stock = Stock.builder().sku("123_aspirin").branchId("123_paulista").amount(-101).build();
 		Stock itemInStock = stock.toBuilder().amount(100).build();
 		Mockito.when(stockRepository.findById(stock.getSku())).thenReturn(Optional.of(itemInStock));
-		assertThrows(OutOfStockException.class, () -> stockService.saveStock(stock));
+		assertThrows(OutOfStockException.class, () -> stockService.save(stock));
 	}
 
 	@Test
