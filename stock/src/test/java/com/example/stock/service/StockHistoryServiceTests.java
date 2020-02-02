@@ -7,6 +7,7 @@ import static org.mockito.Mockito.doNothing;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
@@ -39,6 +40,15 @@ public class StockHistoryServiceTests {
 
 	@MockBean
 	RabbitTemplate rabbitTemplate;
+	
+	public List<OrderItem> orderItemsList = new ArrayList<>();
+
+	@BeforeEach
+	public void createOrderItemsList() {
+		orderItemsList.add(new OrderItem("123_aspirin", 100, "123", 100.00));
+		orderItemsList.add(new OrderItem("456_ibuprofen", 200, "123", 100.00));
+
+	}
 
 	@Test
 	public void whenSaveStockHistoryReturnUpdatedStock() {
@@ -60,9 +70,6 @@ public class StockHistoryServiceTests {
 
 	@Test
 	public void whenProcessOrderSaveStockAndPublishMessageInQueueStockUpdated() {
-		List<OrderItem> orderItemsList = new ArrayList<>();
-		orderItemsList.add(new OrderItem("123_aspirin", 50, "Paulista", 100.00));
-		orderItemsList.add(new OrderItem("456_ibuprofen", 50, "Brooklin", 100.00));
 		Order order = Order.builder()
 						.orderId("123")
 						.walletId("123_peter")
@@ -86,9 +93,6 @@ public class StockHistoryServiceTests {
 	
 	@Test
 	public void whenProcessInvalidOrderDontSaveStockButPublishMessageInQueueOutOfStock() {
-		List<OrderItem> orderItemsList = new ArrayList<>();
-		orderItemsList.add(new OrderItem("123_aspirin", 50, "Paulista", 100.00));
-		orderItemsList.add(new OrderItem("456_ibuprofen", 200, "Brooklin", 100.00));
 		Order order = Order.builder()
 						.orderId("123")
 						.walletId("123_peter")

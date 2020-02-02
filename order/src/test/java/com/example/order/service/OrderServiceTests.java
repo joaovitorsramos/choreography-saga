@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import org.junit.Before;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
@@ -39,7 +39,7 @@ public class OrderServiceTests {
 
 	private List<OrderItem> orderItemsList = new ArrayList<>();
 
-	@Before
+	@BeforeEach
 	public void createOrderItemsList() {
 		orderItemsList.add(new OrderItem("123_aspirin", 100, "123", 100.00));
 		orderItemsList.add(new OrderItem("456_ibuprofen", 200, "123", 100.00));
