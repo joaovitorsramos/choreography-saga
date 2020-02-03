@@ -28,21 +28,15 @@ public class StockService {
 	StockRepository stockRepository;
 
 	public List<Stock> findByBranchIds(List<String> branchIdList) {
-		synchronized (Stock.class) {
 			return stockRepository.findByBranchIdIn(branchIdList).orElseThrow(BranchNotFound::new);
-		}
 	}
 	
-	
 	public Stock findById(String id) {
-		synchronized (Stock.class) {
 			return stockRepository.findById(id).orElseThrow(StockExceptions::new);
-		}
 	}
 
 	@Transactional(propagation = Propagation.REQUIRED)
-	public Stock save(Stock stock) {
-		synchronized (Stock.class) {
+	public synchronized Stock save(Stock stock) {
 
 			Stock currentStock = stockRepository.findById(stock.getSku()).orElse(Stock.builder().amount(0).build());
 			logger.info("currentStock retrieved from database {}", currentStock);
@@ -55,7 +49,6 @@ public class StockService {
 				stock = stockRepository.save(stock);
 			}
 			return stock;
-		}
 	}
 	
 	
