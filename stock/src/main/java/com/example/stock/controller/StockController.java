@@ -1,11 +1,14 @@
 package com.example.stock.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.stock.domain.Stock;
@@ -26,6 +29,12 @@ public class StockController {
 	public Stock findById(@PathVariable final String id) {
 		return stockService.findById(id);
 	}
+	
+	@GetMapping("/stock")
+	public List<Stock> findByBranchIds(@RequestParam("branches") final List<String> branchIdList) {
+		return stockService.findByBranchIds(branchIdList);
+	}
+
 
 	@RequestMapping(path = "/stock", method = { RequestMethod.PUT, RequestMethod.POST })
 	public Stock saveStock(@RequestBody final StockHistory stockHistory) {

@@ -55,7 +55,7 @@ public class StockHistoryServiceTests {
 		StockHistory stockHistory = StockHistory.builder()
 									.sku("123_aspirin")
 									.amount(1)
-									.branchId("123_paulista")
+									.branchId("123")
 									.build();
 		StockHistory mockStockHistoryReturned = stockHistory.toBuilder().build();
 		

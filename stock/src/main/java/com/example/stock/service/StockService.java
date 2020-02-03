@@ -1,5 +1,7 @@
 package com.example.stock.service;
 
+import java.util.List;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,11 +10,10 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.example.stock.domain.Stock;
+import com.example.stock.exceptions.BranchNotFound;
 import com.example.stock.exceptions.OutOfStockException;
 import com.example.stock.exceptions.StockExceptions;
 import com.example.stock.repository.StockRepository;
-
-import lombok.Synchronized;
 
 @Service
 public class StockService {
@@ -26,6 +27,13 @@ public class StockService {
 	@Autowired
 	StockRepository stockRepository;
 
+	public List<Stock> findByBranchIds(List<String> branchIdList) {
+		synchronized (Stock.class) {
+			return stockRepository.findByBranchIdIn(branchIdList).orElseThrow(BranchNotFound::new);
+		}
+	}
+	
+	
 	public Stock findById(String id) {
 		synchronized (Stock.class) {
 			return stockRepository.findById(id).orElseThrow(StockExceptions::new);
@@ -49,4 +57,6 @@ public class StockService {
 			return stock;
 		}
 	}
+	
+	
 }

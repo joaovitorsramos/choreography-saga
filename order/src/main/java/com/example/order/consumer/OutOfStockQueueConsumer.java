@@ -21,8 +21,7 @@ public class OutOfStockQueueConsumer {
 
 	@RabbitListener(queues = OrderService.OUT_OF_STOCK_QUEUE_NAME)
 	public void receive(@Payload Order order) {
-		logger.info("Message {} received in the queue {}", order, OrderService.OUT_OF_STOCK_QUEUE_NAME);
-		//TODO: COLOCAR NO LOG QUE E UMA TRANSCTIONAL COMPENSATING
+		logger.info("Compensating transaction for {} received in the queue {}. Order has to be rejected", order, OrderService.OUT_OF_STOCK_QUEUE_NAME);
 		order.setStatus(OrderStatus.REJECTED);
 		orderService.update(order);
 	}

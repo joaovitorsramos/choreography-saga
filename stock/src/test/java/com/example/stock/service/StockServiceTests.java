@@ -30,7 +30,7 @@ public class StockServiceTests {
 
 	@Test
 	public void whenSaveValidStockReturnStockObject() {
-		Stock stock = Stock.builder().sku("123_aspirin").branchId("123_paulista").amount(1).build();
+		Stock stock = Stock.builder().sku("123_aspirin").branchId("123").amount(1).build();
 		Stock itemInStock = stock.toBuilder().amount(100).build();
 		Stock mockStockReturned = stock.toBuilder().amount(101).build();
 		Stock stockExpected = stock.toBuilder().amount(101).build();
@@ -42,7 +42,7 @@ public class StockServiceTests {
 
 	@Test
 	public void whenSaveInvalidStockThrowOutOfStockException() {
-		Stock stock = Stock.builder().sku("123_aspirin").branchId("123_paulista").amount(-101).build();
+		Stock stock = Stock.builder().sku("123_aspirin").branchId("123").amount(-101).build();
 		Stock itemInStock = stock.toBuilder().amount(100).build();
 		Mockito.when(stockRepository.findById(stock.getSku())).thenReturn(Optional.of(itemInStock));
 		assertThrows(OutOfStockException.class, () -> stockService.save(stock));
@@ -55,11 +55,14 @@ public class StockServiceTests {
 	}
 
 	@Test
-	public void whenValidIdStockShouldObjectBeReturned() {
-		Stock mockStockReturned = Stock.builder().sku("123_aspirin").branchId("123_paulista").amount(1).build();
+	public void whenValidIdStockShouldBeReturned() {
+		Stock mockStockReturned = Stock.builder().sku("123_aspirin").branchId("123").amount(1).build();
 		Stock stockExpected = mockStockReturned.toBuilder().build();
 		Mockito.when(stockRepository.findById("123_aspirin")).thenReturn(Optional.of(mockStockReturned));
 		assertEquals(stockExpected, stockService.findById("123_aspirin"));
 	}
+	
+	
+
 
 }
