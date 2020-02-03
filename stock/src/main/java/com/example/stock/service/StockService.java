@@ -37,7 +37,6 @@ public class StockService {
 
 	@Transactional(propagation = Propagation.REQUIRED)
 	public synchronized Stock save(Stock stock) {
-
 			Stock currentStock = stockRepository.findById(stock.getSku()).orElse(Stock.builder().amount(0).build());
 			logger.info("currentStock retrieved from database {}", currentStock);
 			Integer updatedStockAmount = currentStock.getAmount() + stock.getAmount();
