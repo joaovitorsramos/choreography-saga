@@ -148,7 +148,7 @@ download available from: https://projectlombok.org
 
 === Check Stock
 
-. First, execute all the steps in <<Create Stock Items>>  and <<Create Orders>>. Then fill the stock with 100 items of aspirin at the "1010" branch 
+. First, execute all the steps in <<Create Stock Items>>  and <<Create Orders>>. Then fill the stock with 100 items of aspirin at the _1010_ branch 
   
 	curl --location --request PUT 'http://localhost:8081/stock' \
 	--header 'Content-Type: application/json' \
@@ -158,7 +158,7 @@ download available from: https://projectlombok.org
 	        "branchId": "1010"
 	    }'
 
-. Now check the stock for the "123_aspirin" SKU
+. Now check the stock for the _123_aspirin_ SKU
 	
 	curl --location --request GET 'http://localhost:8081/stock/123_aspirin' \
 	--header 'Content-Type: application/json' \
@@ -179,7 +179,7 @@ download available from: https://projectlombok.org
 	    }
 	]
 	
-. To check the stock for the SKU "123_aspirin" at the "1212" branch
+. To check the stock for the SKU _123_aspirin_ at the _1212_ branch
 
 	curl --location --request GET 'http://localhost:8081/stock/123_aspirin?branches=1212' \
 	--header 'Content-Type: application/json' \
@@ -195,7 +195,7 @@ download available from: https://projectlombok.org
 	    }
 	]
 
-. Finally, check for all SKUs in stock at the "1212" and "1010" branches 
+. Finally, check for all SKUs in stock at the _1212_ and _1010_ branches 
 	
 	curl --location --request GET 'http://localhost:8081/stock?branches=1010,1212' \
 	--header 'Content-Type: application/json' \
