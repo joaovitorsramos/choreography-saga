@@ -24,7 +24,7 @@ public class OrderController {
 		return orderService.findById(id);
 	}
 	
-	@ApiOperation(value = "Create order")
+	@ApiOperation(value = "Create an order")
 	@PostMapping("/orders")
 	public Order create(@RequestBody final Order order) {
 		return orderService.create(order);

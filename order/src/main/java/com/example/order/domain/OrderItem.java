@@ -10,6 +10,8 @@ import javax.persistence.Id;
 
 import org.hibernate.annotations.GenericGenerator;
 
+import io.swagger.annotations.ApiModelProperty;
+import io.swagger.annotations.ApiModelProperty.AccessMode;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -23,7 +25,8 @@ import lombok.NoArgsConstructor;
 public class OrderItem implements Serializable {
 
 	private static final long serialVersionUID = -6681465754935755697L;
-
+	
+	@ApiModelProperty(required=false, accessMode = AccessMode.READ_ONLY)
 	@Id
 	@GeneratedValue(generator = "uuid2")
 	@GenericGenerator(name = "uuid2", strategy = "org.hibernate.id.UUIDGenerator")
