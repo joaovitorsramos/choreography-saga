@@ -12,6 +12,7 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import com.example.stock.domain.Stock;
+import com.example.stock.domain.StockId;
 
 @RunWith(SpringRunner.class)
 @DataJpaTest
@@ -26,11 +27,11 @@ public class StockRepositoryTests {
 	@Test
 	public void whenFindByIdThenReturnStock() {
 		// given
-		Stock stock = Stock.builder().sku("123_aspirin").amount(20).branchId("123_paulista").build();
+		Stock stock = Stock.builder().sku("123_aspirin").amount(20).branchId("123").build();
 		entityManager.persist(stock);
 		entityManager.flush();
 		// when
-		Optional<Stock> stockFound = stockRepository.findById("123_aspirin");
+		Optional<Stock> stockFound = stockRepository.findById(new StockId("123_aspirin","123"));
 		// then
 		assertEquals(stock.getSku(), stockFound.get().getSku());
 

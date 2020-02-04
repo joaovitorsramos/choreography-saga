@@ -22,7 +22,7 @@ public class OrderController {
 	}
 
 	@PostMapping("/orders")
-	public Order createOrder(@RequestBody final Order order) {
+	public Order create(@RequestBody final Order order) {
 		return orderService.create(order);
 
 	}
