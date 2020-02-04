@@ -146,6 +146,81 @@ download available from: https://projectlombok.org
 
 . The returned status should be "*REJECTED*".
 
+=== Check Stock
+
+. First, execute all the steps in <<Create Stock Items>>  and <<Create Orders>>. Then fill the stock with 100 items of aspirin at the "1010" branch 
+  
+	curl --location --request PUT 'http://localhost:8081/stock' \
+	--header 'Content-Type: application/json' \
+	--data-raw '{
+	        "sku": "123_aspirin",
+	        "amount": "100",
+	        "branchId": "1010"
+	    }'
+
+. Now check the stock for the "123_aspirin" SKU
+	
+	curl --location --request GET 'http://localhost:8081/stock/123_aspirin' \
+	--header 'Content-Type: application/json' \
+	--data-raw ''
+
+. The response should be
+
+	[
+	    {
+	        "sku": "123_aspirin",
+	        "amount": 90,
+	        "branchId": "1212"
+	    },
+	    {
+	        "sku": "123_aspirin",
+	        "amount": 100,
+	        "branchId": "1010"
+	    }
+	]
+	
+. To check the stock for the SKU "123_aspirin" at the "1212" branch
+
+	curl --location --request GET 'http://localhost:8081/stock/123_aspirin?branches=1212' \
+	--header 'Content-Type: application/json' \
+	--data-raw ''
+	
+. The result should be
+
+	[
+	    {
+	        "sku": "123_aspirin",
+	        "amount": 90,
+	        "branchId": "1212"
+	    }
+	]
+
+. Finally, check for all SKUs in stock at the "1212" and "1010" branches 
+	
+	curl --location --request GET 'http://localhost:8081/stock?branches=1010,1212' \
+	--header 'Content-Type: application/json' \
+	--data-raw ''
+
+. It should be
+
+	[
+	    {
+	        "sku": "123_aspirin",
+	        "amount": 100,
+	        "branchId": "1010"
+	    },
+	    {
+	        "sku": "123_aspirin",
+	        "amount": 90,
+	        "branchId": "1212"
+	    },
+	    {
+	        "sku": "456_ibuprofen",
+	        "amount": 190,
+	        "branchId": "1212"
+	    }
+	]
+
 == Spring Boot and H2 Magic
 
 . H2 provides a web interface called H2 Console to see the data. Let’s enable h2 console in the `application.properties`.
