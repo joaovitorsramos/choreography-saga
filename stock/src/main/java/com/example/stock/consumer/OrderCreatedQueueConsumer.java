@@ -1,5 +1,6 @@
 package com.example.stock.consumer;
 
+import org.openapitools.client.model.Order;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
@@ -7,13 +8,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.UnexpectedRollbackException;
 
-import com.example.order.domain.Order;
+
 import com.example.stock.service.StockHistoryService;
 import com.example.stock.service.StockService;
 
 @Component
 public class OrderCreatedQueueConsumer {
-
 	Logger logger = LoggerFactory.getLogger(OrderCreatedQueueConsumer.class);
 
 	@Autowired
@@ -28,9 +28,8 @@ public class OrderCreatedQueueConsumer {
 		try {
 			stockHistoryService.processOrder(order);
 		} catch (UnexpectedRollbackException e) {
-			logger.error("Processing Order Transaction Rolled-back ", e);
+			logger.error( e.toString());
 		}
 
 	}
-
 }

@@ -11,15 +11,15 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
+import org.openapitools.client.model.Order;
+import org.openapitools.client.model.OrderItem;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import com.example.order.domain.Order;
-import com.example.order.domain.OrderItem;
-import com.example.order.domain.OrderStatus;
+
 import com.example.stock.domain.Stock;
 import com.example.stock.domain.StockHistory;
 import com.example.stock.exceptions.OutOfStockException;
@@ -45,8 +45,8 @@ public class StockHistoryServiceTests {
 
 	@BeforeEach
 	public void createOrderItemsList() {
-		orderItemsList.add(new OrderItem("123_aspirin", 100, "123", 100.00));
-		orderItemsList.add(new OrderItem("456_ibuprofen", 200, "123", 100.00));
+		orderItemsList.add(new OrderItem().sku("123_aspirin").amount(100).branchId("123").cost(100.00));
+		orderItemsList.add(new OrderItem().sku("456_ibuprofen").amount(100).branchId("123").cost(100.00));
 
 	}
 
@@ -70,13 +70,12 @@ public class StockHistoryServiceTests {
 
 	@Test
 	public void whenProcessOrderSaveStockAndPublishMessageInQueueStockUpdated() {
-		Order order = Order.builder()
+		Order order = new Order()
 						.orderId("123")
 						.walletId("123_peter")
 						.customerId("123_peter")
-						.status(OrderStatus.APPROVAL_PENDING)
-						.orderItems(orderItemsList)
-						.build();
+						.status(Order.StatusEnum.APPROVAL_PENDING)
+						.orderItems(orderItemsList);
 		StockHistory stockHistory1 = new StockHistory(orderItemsList.get(0).getSku(), -orderItemsList.get(0).getAmount(), orderItemsList.get(0).getBranchId());
 		StockHistory stockHistory2 = new StockHistory(orderItemsList.get(1).getSku(), -orderItemsList.get(1).getAmount(), orderItemsList.get(1).getBranchId());
 		
@@ -93,12 +92,12 @@ public class StockHistoryServiceTests {
 	
 	@Test
 	public void whenProcessInvalidOrderDontSaveStockButPublishMessageInQueueOutOfStock() {
-		Order order = Order.builder()
+		Order order = new Order()
 						.orderId("123")
 						.walletId("123_peter")
 						.customerId("123_peter")
-						.status(OrderStatus.APPROVAL_PENDING)
-						.orderItems(orderItemsList).build();
+						.status(Order.StatusEnum.APPROVAL_PENDING)
+						.orderItems(orderItemsList);
 		StockHistory stockHistory1 = new StockHistory(orderItemsList.get(0).getSku(), -orderItemsList.get(0).getAmount(), orderItemsList.get(0).getBranchId());
 		StockHistory stockHistory2 = new StockHistory(orderItemsList.get(1).getSku(), -orderItemsList.get(1).getAmount(), orderItemsList.get(1).getBranchId());
 		

@@ -1,5 +1,4 @@
 
-
 = Choreophy SAGA Pattern and Event Sourcing Pattern Project
 :toc:
 
@@ -29,6 +28,48 @@ https://marketplace.eclipse.org/content/yaml-editor
 download available from: https://projectlombok.org
 
 	java -jar lombok.jar
+	
+	
+	
+	
+=== Generate a client code from an OpenAPI specification
+	
+. To create a client library for the *Order* and *OrderItem* entities, in the order project folder run
+
+	mvn clean verify -P java-client
+	
+
+What does the above command do and how does it work?
+[%collapsible]	
+====
+
+	It generates a java code using a custom profile “java-client” during integration-test phase. 
+
+How does it work?	
+
+	In our pom.xml there is a Maven profile with the openapi-generator-maven-plugin. This profile also overrides the configuration for the the existing spring-boot-maven-plugin.
+	
+	Spring-boot-maven-plugin is used to temporarily launch the application through maven, while openapi-generator-maven-plugin will retrieve the OpenAPI specification from its endpoint (http://localhost:8080/v2/api-docs) to generate the desired Java code.
+	
+	The code generation is done during the integration-test phase in the custom “java-client” profile, so that it can be run by invoking Maven’s verify phase (invoking just integration-test will not work as we will also need the pre- and post- phases).
+		
+	Spring-boot-maven-plugin is overriden, as it is important to make sure that the application is running when the openapi-generator-maven-plugin‘s goal is executed. That way, the application will be started before the integration-test phase begins and stopped after it finishes.
+	Setting up openapi-generator-maven-plugin itself, however, is a little bit more complicated. Firstly, this plugin’s default phase is generate-sources, which means that it would run before the specification file is available. That is why the phase is explicitly set as integration-test.
+	
+====
+{nbsp} +
+
+[start=2]
+. The generated client code is inside /target/generated-sources/java. To packaged the order-client and put in the local maven repository run:
+
+	mvn clean install -f ./target/generated-sources/java -Dmaven.javadoc.skip=true 
+	
+	NOTE: Now it is possible to use the entities Order and OrderItem as a dependency in the stock service.
+
+
+
+
+
 
 == Build each service using Maven
 

@@ -1,5 +1,6 @@
 package com.example.stock.service;
 
+import org.openapitools.client.model.Order;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.amqp.core.Queue;
@@ -9,7 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.example.order.domain.Order;
+
 import com.example.stock.domain.Stock;
 import com.example.stock.domain.StockHistory;
 import com.example.stock.exceptions.OutOfStockException;
