@@ -72,6 +72,12 @@
 			<artifactId>spring-rabbit-test</artifactId>
 			<scope>test</scope>
 		</dependency>
+		<dependency>
+			<groupId>org.projectSaga</groupId>
+    		<artifactId>order-client-lib</artifactId>
+    		<version>1.0.0</version>
+		</dependency>
+		
 	</dependencies>
 
 	<build>

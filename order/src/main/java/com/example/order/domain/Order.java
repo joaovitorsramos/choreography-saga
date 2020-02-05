@@ -13,6 +13,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -34,7 +35,8 @@ public class Order implements Serializable {
 	private String customerId;
 	private String walletId;
 
-	
+
+	@ApiModelProperty
 	@Enumerated(EnumType.STRING)
 	private OrderStatus status;
 
