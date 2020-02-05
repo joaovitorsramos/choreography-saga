@@ -57,13 +57,13 @@ It generates a java code using a custom profile called “java-client” during 
 
 How does it work?	
 
-In our pom.xml there is a Maven profile with the openapi-generator-maven-plugin. This profile also overrides the configuration for the the existing spring-boot-maven-plugin.
+In pom.xml file there is a Maven profile with the openapi-generator-maven-plugin. This profile also overrides the configuration for the the existing spring-boot-maven-plugin.
 
 Spring-boot-maven-plugin is used to temporarily launch the application through maven, while openapi-generator-maven-plugin will retrieve the OpenAPI specification from its endpoint (http://localhost:8080/v2/api-docs) to generate the desired Java code.
 	The OpenAPI specification in the mentioned endpoint is generated thanks to Springfox project, which is a tool that serves as a bridge between Spring applications and Swagger by creating a Swagger documentation for certain Spring beans and annotations.
 
 
-he code generation is done during the integration-test phase in the custom “java-client” profile, so that it can be executed by invoking Maven’s verify phase (invoking just integration-test will not work as we will also need the pre- and post- phases).
+The code generation is done during the integration-test phase in the custom “java-client” profile, so that it can be executed by invoking Maven’s verify phase (invoking just integration-test will not work as we will also need the pre- and post- phases).
 	
 Spring-boot-maven-plugin is overriden, as it is important to make sure that the application is running when the openapi-generator-maven-plugin‘s goal is executed. That way, the application will be started before the integration-test phase begins and stopped after it finishes.
 Setting up openapi-generator-maven-plugin itself, however, is a little bit more complicated. Firstly, this plugin’s default phase is generate-sources, which means that it would run before the specification file is available. That is why the phase is explicitly set as integration-test.
