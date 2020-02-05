@@ -18,7 +18,6 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import com.example.stock.domain.Stock;
 import com.example.stock.domain.StockId;
-import com.example.stock.exceptions.BranchNotFound;
 import com.example.stock.exceptions.OutOfStockException;
 import com.example.stock.repository.StockRepository;
 
