@@ -13,8 +13,6 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
-import io.swagger.annotations.ApiModelProperty.AccessMode;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -27,6 +25,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder(toBuilder = true)
+
 public class Order implements Serializable {
 	private static final long serialVersionUID = -4375073566026914661L;
 	
