@@ -66,22 +66,13 @@ Setting up openapi-generator-maven-plugin itself, however, is a little bit mor
 {nbsp} +
 
 [start=2]
-. The generated client code is inside /target/generated-sources/java. To packaged the order-client and install in the local maven repository run:
+. The generated client code is inside _/target/generated-sources/java_. To compile, package the generated client code and add its artifact to local maven repository run:
 
 	mvn clean install -f ./target/generated-sources/java -Dmaven.javadoc.skip=true 
 	
 NOTE: Now it is possible to use the entities Order and OrderItem as a dependency in the stock service.
 
 
-
-
-
-
-== Build each service using Maven
-
-. Run applications:
-
-	mvn spring-boot:run
 
 
 == Create Queues in RabbitMQ
@@ -96,6 +87,15 @@ NOTE: Now it is possible to use the entities Order and OrderItem as a dependency
 * orderCreated
 * stockUpdated
 * outOfStock	
+
+
+
+== Build each service using Maven
+
+. Run applications:
+
+	mvn spring-boot:run
+
 
 == Test application
 
