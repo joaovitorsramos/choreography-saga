@@ -32,7 +32,7 @@ download available from: https://projectlombok.org
 	
 	
 	
-== Generate a client code from an OpenAPI specification
+== Generating a client code from an OpenAPI specification
 	
 . To create a client library for the *Order* and *OrderItem* entities, in the order project folder run
 
@@ -42,8 +42,10 @@ download available from: https://projectlombok.org
 What does the above command do and how does it work?
 [%collapsible]	
 ====
-****
-It generates a java code using a custom profile “java-client” during integration-test phase. 
+
+*******
+
+It generates a java code using a custom profile called “java-client” during integration-test phase. 
 
 How does it work?	
 
@@ -55,16 +57,18 @@ The code generation is done during the integration-test phase in the custom “j
 	
 Spring-boot-maven-plugin is overriden, as it is important to make sure that the application is running when the openapi-generator-maven-plugin‘s goal is executed. That way, the application will be started before the integration-test phase begins and stopped after it finishes.
 Setting up openapi-generator-maven-plugin itself, however, is a little bit more complicated. Firstly, this plugin’s default phase is generate-sources, which means that it would run before the specification file is available. That is why the phase is explicitly set as integration-test.
-****
+
+*******
+
 ====
 {nbsp} +
 
 [start=2]
-. The generated client code is inside /target/generated-sources/java. To packaged the order-client and put in the local maven repository run:
+. The generated client code is inside /target/generated-sources/java. To packaged the order-client and install in the local maven repository run:
 
 	mvn clean install -f ./target/generated-sources/java -Dmaven.javadoc.skip=true 
 	
-	NOTE: Now it is possible to use the entities Order and OrderItem as a dependency in the stock service.
+NOTE: Now it is possible to use the entities Order and OrderItem as a dependency in the stock service.
 
 
 
