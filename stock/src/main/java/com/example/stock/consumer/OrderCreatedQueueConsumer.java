@@ -27,8 +27,8 @@ public class OrderCreatedQueueConsumer {
 		logger.info("Message {} received in the queue {}", order, StockService.ORDER_CREATED_QUEUE_NAME);
 		try {
 			stockEventService.process(order);
-		} catch (Exception e) {
-			logger.error( e.toString());
+		} catch (UnexpectedRollbackException e) {
+			logger.info("There is not enough items of {} in stock to process this order",order);
 		}
 
 	}

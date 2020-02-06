@@ -52,15 +52,16 @@ public class OrderService {
 
 	
 	public Order findById(String id) {
-		return orderRepository.findById(id).orElseThrow(OrderNotFoundException::new);
+		return orderRepository.findById(id).orElseThrow(() ->  new OrderNotFoundException(id));
 	}
 
 	
 	public void processStockUpdated(List<StockMessage> stockMessageList) {
-		Set<String> orderIdList = new HashSet<>();
+		var orderIdList = new HashSet<String>();
 		stockMessageList.stream().forEach((s) -> {
 			if (s.getOrderItemId()!=null) {
-			OrderItem orderItem = orderItemRepository.findById(s.getOrderItemId()).orElseThrow(OrderItemNotFoundException::new);
+			OrderItem orderItem = orderItemRepository.findById(s.getOrderItemId())
+									.orElseThrow(() ->  new OrderItemNotFoundException(s.getOrderItemId()));
 			orderItem.setItemStatus(Status.APPROVED);
 			logger.info("updating record of {}", orderItem);
 			orderItem = orderItemRepository.save(orderItem);
@@ -68,7 +69,7 @@ public class OrderService {
 			}
 		});
 		orderIdList.stream().forEach((s) -> {
-			Order order = orderRepository.findById(s).orElseThrow(OrderNotFoundException::new);
+			Order order = orderRepository.findById(s).orElseThrow(() ->  new OrderNotFoundException(s));
 			boolean allOrderItemsApproved = order.getOrderItems().stream()
 					.allMatch(x -> x.getItemStatus().equals(Status.APPROVED));
 			logger.info("All Items of the {} are approved? ", order, allOrderItemsApproved);
@@ -79,16 +80,13 @@ public class OrderService {
 			}
 		});
 	}
-	
+
 	public void processOutOfStock(List<StockMessage> stockMessageList) {
 		stockMessageList.stream().forEach((s) -> {
-			if (s.getOrderItemId()!=null) {
-			OrderItem orderItem = orderItemRepository.findById(s.getOrderItemId()).orElseThrow(OrderItemNotFoundException::new);
-			orderItem.setItemStatus(Status.REJECTED);
-			logger.info("updating record of {}", orderItem);
-			orderItem = orderItemRepository.save(orderItem);
-			Order order = orderRepository.findById(s.getOrderId()).orElseThrow(OrderNotFoundException::new);
+			if (s.getOrderId()!=null) {
+			Order order = orderRepository.findById(s.getOrderId()).orElseThrow(() ->  new OrderNotFoundException(s.getOrderId()));
 			order.setStatus(Status.REJECTED);
+			order.getOrderItems().stream().forEach(i -> i.setItemStatus(Status.REJECTED));
 			logger.info("updating record of {}", order);
 			order = orderRepository.save(order);
 			}

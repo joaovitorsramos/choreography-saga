@@ -11,7 +11,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit4.SpringRunner;
 
-
+import com.example.order.domain.Order;
+import com.example.order.domain.Status;
 import com.example.stock.service.StockEventService;
 
 @RunWith(SpringRunner.class)
@@ -22,17 +23,17 @@ public class OrderCreatedQueueConsumerTest {
 	OrderCreatedQueueConsumer orderCreatedQueueConsumer;
 	
 	@MockBean
-	StockEventService stockHistoryService;
-/*	
+	StockEventService stockEventService;
+	
 	@Test
 	public void whenReceiveMessageUpdateOrderWithApprovedStatus() {
-		Order receivedOrder = new Order().orderId("123").customerId("123_peter").walletId("123_peter")
-				.status(Order.StatusEnum.APPROVAL_PENDING);
+		Order receivedOrder = Order.builder().orderId("123").customerId("123_peter").walletId("123_peter")
+				.status(Status.APPROVAL_PENDING).build();
 		ArgumentCaptor<Order> arguments = ArgumentCaptor.forClass(Order.class);
 		orderCreatedQueueConsumer.receive(receivedOrder);
-		Mockito.verify(stockHistoryService).process(arguments.capture());
-		assertEquals(Order.StatusEnum.APPROVAL_PENDING, arguments.getValue().getStatus());
+		Mockito.verify(stockEventService).process(arguments.capture());
+		assertEquals(Status.APPROVAL_PENDING, arguments.getValue().getStatus());
 
 	}
-	*/
+	
 }

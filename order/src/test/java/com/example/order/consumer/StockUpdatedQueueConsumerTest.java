@@ -2,6 +2,8 @@ package com.example.order.consumer;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+import java.util.ArrayList;
+
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.mockito.ArgumentCaptor;
@@ -14,6 +16,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import com.example.order.domain.Order;
 import com.example.order.domain.Status;
 import com.example.order.service.OrderService;
+import com.example.stock.domain.StockMessage;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -24,15 +27,15 @@ public class StockUpdatedQueueConsumerTest {
 	
 	@MockBean
 	OrderService orderService;
-	/*
+	
 	@Test
-	public void whenReceiveMessageUpdateOrderWithApprovedStatus() {
-		Order receivedOrder = Order.builder().orderId("123").customerId("123_peter").walletId("123_peter").build();
-		ArgumentCaptor<Order> arguments = ArgumentCaptor.forClass(Order.class);
-		stockUpdatedQueueConsumer.receive(receivedOrder);
-		Mockito.verify(orderService).update(arguments.capture());
-		assertEquals(Status.APPROVED, arguments.getValue().getStatus());
-		   
+	public void whenReceiveMessageUpdateOrderWithApprovedStatus() {	
+		var stockMessageList = new ArrayList<StockMessage>();
+		stockMessageList.add(StockMessage.builder().sku("123").amount(10).branchId("123").orderId("123").build());
+		stockUpdatedQueueConsumer.receive(stockMessageList);
+		Mockito.verify(orderService).processStockUpdated(stockMessageList);
+
+		
 	}
-	*/
+	
 }

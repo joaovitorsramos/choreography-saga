@@ -47,11 +47,12 @@ public class StockService {
 		logger.info("currentStock retrieved from database {}", currentStock);
 		Integer updatedStockAmount = currentStock.getAmount() + stock.getAmount();
 		if (updatedStockAmount < 0) {
-			throw new OutOfStockException();
+			throw new OutOfStockException(stock);
 		} else {
 			stock.setAmount(updatedStockAmount);
 			logger.info("saving record {}", stock);
 			stock = stockRepository.save(stock);
+			
 		}
 		return stock;
 	}
