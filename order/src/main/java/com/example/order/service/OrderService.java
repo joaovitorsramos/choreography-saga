@@ -1,5 +1,9 @@
 package com.example.order.service;
 
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.amqp.core.Queue;
@@ -8,9 +12,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.example.order.domain.Order;
-import com.example.order.domain.OrderStatus;
+import com.example.order.domain.OrderItem;
+import com.example.order.domain.Status;
+import com.example.order.exception.OrderItemNotFoundException;
 import com.example.order.exception.OrderNotFoundException;
+import com.example.order.repository.OrderItemRepository;
 import com.example.order.repository.OrderRepository;
+import com.example.stock.domain.StockMessage;
 
 @Service
 public class OrderService {
@@ -19,6 +27,9 @@ public class OrderService {
 
 	@Autowired
 	OrderRepository orderRepository;
+
+	@Autowired
+	OrderItemRepository orderItemRepository;
 
 	@Autowired
 	private RabbitTemplate rabbitTemplate;
@@ -30,7 +41,8 @@ public class OrderService {
 	private Queue orderCreateQueue = new Queue(ORDER_CREATED_QUEUE_NAME, true);
 
 	public Order create(Order order) {
-		order.setStatus(OrderStatus.APPROVAL_PENDING);
+		order.setStatus(Status.APPROVAL_PENDING);
+		order.getOrderItems().stream().forEach(i -> i.setItemStatus(Status.APPROVAL_PENDING));
 		logger.info("saving record of {}", order);
 		order = orderRepository.save(order);
 		logger.info("publishing message {} to queue {}", order, orderCreateQueue.getName());
@@ -38,13 +50,49 @@ public class OrderService {
 		return order;
 	}
 
-	public Order update(Order order) {
-		logger.info("updating record {}", order);
-		return orderRepository.save(order);
-	}
-
+	
 	public Order findById(String id) {
 		return orderRepository.findById(id).orElseThrow(OrderNotFoundException::new);
+	}
+
+	
+	public void processStockUpdated(List<StockMessage> stockMessageList) {
+		Set<String> orderIdList = new HashSet<>();
+		stockMessageList.stream().forEach((s) -> {
+			if (s.getOrderItemId()!=null) {
+			OrderItem orderItem = orderItemRepository.findById(s.getOrderItemId()).orElseThrow(OrderItemNotFoundException::new);
+			orderItem.setItemStatus(Status.APPROVED);
+			logger.info("updating record of {}", orderItem);
+			orderItem = orderItemRepository.save(orderItem);
+			orderIdList.add(s.getOrderId());
+			}
+		});
+		orderIdList.stream().forEach((s) -> {
+			Order order = orderRepository.findById(s).orElseThrow(OrderNotFoundException::new);
+			boolean allOrderItemsApproved = order.getOrderItems().stream()
+					.allMatch(x -> x.getItemStatus().equals(Status.APPROVED));
+			logger.info("All Items of the {} are approved? ", order, allOrderItemsApproved);
+			if (allOrderItemsApproved) {
+				order.setStatus(Status.APPROVED);
+				logger.info("updating record of {}", order);
+				order = orderRepository.save(order);
+			}
+		});
+	}
+	
+	public void processOutOfStock(List<StockMessage> stockMessageList) {
+		stockMessageList.stream().forEach((s) -> {
+			if (s.getOrderItemId()!=null) {
+			OrderItem orderItem = orderItemRepository.findById(s.getOrderItemId()).orElseThrow(OrderItemNotFoundException::new);
+			orderItem.setItemStatus(Status.REJECTED);
+			logger.info("updating record of {}", orderItem);
+			orderItem = orderItemRepository.save(orderItem);
+			Order order = orderRepository.findById(s.getOrderId()).orElseThrow(OrderNotFoundException::new);
+			order.setStatus(Status.REJECTED);
+			logger.info("updating record of {}", order);
+			order = orderRepository.save(order);
+			}
+		});
 	}
 
 }
