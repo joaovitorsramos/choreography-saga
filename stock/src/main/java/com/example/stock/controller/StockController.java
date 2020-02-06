@@ -26,7 +26,7 @@ public class StockController {
 	StockService stockService;
 
 	@Autowired
-	StockEventService stockHistoryService;
+	StockEventService stockEventService;
 
 	@GetMapping("/stock/{id}")
 	public List<Stock> findById(@PathVariable final String id,
@@ -47,8 +47,8 @@ public class StockController {
 	}
 
 	@RequestMapping(path = "/stock", method = { RequestMethod.PUT, RequestMethod.POST })
-	public Stock saveStock(@RequestBody final StockEvent stockHistory) {
-		return stockHistoryService.save(stockHistory);
+	public Stock saveStock(@RequestBody final StockEvent stockEvent) {
+		return stockEventService.save(stockEvent);
 	}
 	
 	

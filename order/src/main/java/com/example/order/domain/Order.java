@@ -13,7 +13,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
-import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -36,7 +35,6 @@ public class Order implements Serializable {
 	private String walletId;
 
 
-	@ApiModelProperty
 	@Enumerated(EnumType.STRING)
 	private Status status;
 

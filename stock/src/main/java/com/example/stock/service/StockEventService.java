@@ -41,42 +41,47 @@ public class StockEventService {
 	StockEventRepository stockEventRepository;
 
 	@Transactional(propagation = Propagation.REQUIRED)
-	public Stock save(StockEvent stockHistory) {
-		logger.info("saving record {}", stockHistory);
-		stockHistory = stockEventRepository.save(stockHistory);
-		Stock stock = new Stock(stockHistory.getSku(), stockHistory.getAmount(), stockHistory.getBranchId());
-		logger.info("calling stockService.save passing {}", stockHistory);
+	public Stock save(StockEvent stockEvent) {
+		logger.info("saving record {}", stockEvent);
+		stockEvent = stockEventRepository.save(stockEvent);
+		Stock stock = new Stock(stockEvent.getSku(), stockEvent.getAmount(), stockEvent.getBranchId());
+		logger.info("calling stockService.save passing {}", stockEvent);
 		stock = stockService.save(stock);
 		return stock;
 	}
 
 	@Transactional(propagation = Propagation.REQUIRED)
-	public void process(Order order) {
-		List<StockMessage> stockMessageSuccessList = new ArrayList<StockMessage>();
-		List<StockMessage> stockMessageFailList = new ArrayList<StockMessage>();
+	public synchronized void process(Order order) {
+		var stockMessageSuccessList = new ArrayList<StockMessage>();
+		var stockMessageFailList = new ArrayList<StockMessage>();
 		order.getOrderItems().stream().forEach((s) -> {
-			StockMessage stockOrigalMessage = new StockMessage(s.getSku(), s.getAmount(), s.getBranchId(),
-																order.getOrderId(), s.getOrderItemId());
+			var stockMessage = new StockMessage(s.getSku(), s.getAmount(), s.getBranchId(), order.getOrderId(),
+					s.getOrderItemId());
 			try {
-				StockEvent stockEvent = new StockEvent(s.getSku(), -s.getAmount(), s.getBranchId());
+				var stockEvent = new StockEvent(s.getSku(), -s.getAmount(), s.getBranchId());
 				logger.info("saving record {}", stockEvent);
 				stockEventRepository.save(stockEvent);
-				Stock stock = new Stock(s.getSku(), -s.getAmount(), s.getBranchId());
+				var stock = new Stock(s.getSku(), -s.getAmount(), s.getBranchId());
 				logger.info("calling stockService.save passing {}", stockEvent);
 				stock = stockService.save(stock);
 				stockMessageSuccessList.add(new StockMessage(stock.getSku(), stock.getAmount(), stock.getBranchId(),
-											order.getOrderId(), s.getOrderItemId()));
+						order.getOrderId(), s.getOrderItemId()));
 			} catch (OutOfStockException e) {
-				stockMessageFailList.add(stockOrigalMessage);
-				logger.info("sending message {} to queue {}", stockMessageFailList, StockEventService.OUT_OF_STOCK_QUEUE_NAME);
-				rabbitTemplate.convertAndSend(outOfStockQueue.getName(), stockMessageFailList);
-				logger.info(e.toString());
-				throw e;
+				logger.info(e.getMessage());
+				stockMessageFailList.add(stockMessage);
 			}
 		});
-		logger.info("sending message {} to queue {}", stockMessageSuccessList, StockEventService.STOCK_UPDATED_QUEUE_NAME);
-		rabbitTemplate.convertAndSend(stockUpdatedQueue.getName(), stockMessageSuccessList);
+		if (!stockMessageFailList.isEmpty()) {
+			logger.info("sending message {} to queue {}", stockMessageFailList,
+					StockEventService.OUT_OF_STOCK_QUEUE_NAME);
+			rabbitTemplate.convertAndSend(outOfStockQueue.getName(), stockMessageFailList);
 
+		} else if (!stockMessageSuccessList.isEmpty()) {
+			logger.info("sending message {} to queue {}", stockMessageSuccessList,
+					StockEventService.STOCK_UPDATED_QUEUE_NAME);
+			rabbitTemplate.convertAndSend(stockUpdatedQueue.getName(), stockMessageSuccessList);
+
+		}
 	}
 
 }
