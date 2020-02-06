@@ -14,8 +14,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.stock.domain.Stock;
-import com.example.stock.domain.StockHistory;
-import com.example.stock.service.StockHistoryService;
+import com.example.stock.domain.StockEvent;
+import com.example.stock.domain.StockMessage;
+import com.example.stock.service.StockEventService;
 import com.example.stock.service.StockService;
 
 @RestController
@@ -25,7 +26,7 @@ public class StockController {
 	StockService stockService;
 
 	@Autowired
-	StockHistoryService stockHistoryService;
+	StockEventService stockHistoryService;
 
 	@GetMapping("/stock/{id}")
 	public List<Stock> findById(@PathVariable final String id,
@@ -46,8 +47,14 @@ public class StockController {
 	}
 
 	@RequestMapping(path = "/stock", method = { RequestMethod.PUT, RequestMethod.POST })
-	public Stock saveStock(@RequestBody final StockHistory stockHistory) {
+	public Stock saveStock(@RequestBody final StockEvent stockHistory) {
 		return stockHistoryService.save(stockHistory);
+	}
+	
+	
+	@GetMapping("/stockMessage")
+	public StockMessage dumStockMessage(@RequestParam("branches") String s) {
+		return null;
 	}
 
 }

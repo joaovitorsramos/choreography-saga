@@ -1,5 +1,7 @@
 package com.example.order.consumer;
 
+import java.util.List;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
@@ -7,9 +9,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.stereotype.Component;
 
-import com.example.order.domain.Order;
-import com.example.order.domain.OrderStatus;
+import com.example.order.domain.Status;
 import com.example.order.service.OrderService;
+import com.example.stock.domain.StockMessage;
 
 @Component
 public class StockUpdatedQueueConsumer {
@@ -20,10 +22,8 @@ public class StockUpdatedQueueConsumer {
 	OrderService orderService;
 
 	@RabbitListener(queues = OrderService.STOCK_UPDATED_QUEUE_NAME)
-	public void receive(@Payload Order order) {
-		logger.info("Message {} received in the queue {}", order, OrderService.STOCK_UPDATED_QUEUE_NAME);
-		order.setStatus(OrderStatus.APPROVED);
-		orderService.update(order);
+	public void receive(@Payload List<StockMessage> stockMessageList) {
+		logger.info("Message {} received in the queue {}", stockMessageList, OrderService.STOCK_UPDATED_QUEUE_NAME);
+		orderService.processStockUpdated(stockMessageList);
 	}
-
 }

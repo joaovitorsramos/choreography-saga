@@ -1,15 +1,14 @@
-package com.example.order.domain;
+package com.example.stock.domain;
 
-import java.io.Serializable;
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 
+import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.GenericGenerator;
 
 import lombok.AllArgsConstructor;
@@ -21,30 +20,25 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Builder
-public class OrderItem implements Serializable {
+@Builder(toBuilder = true)
+public class StockEvent {
 
-	private static final long serialVersionUID = -6681465754935755697L;
 	@Id
 	@GeneratedValue(generator = "uuid2")
 	@GenericGenerator(name = "uuid2", strategy = "org.hibernate.id.UUIDGenerator")
 	@Column(name = "id", columnDefinition = "VARCHAR(255)")
-	private UUID orderItemId;
+	private UUID Id;
 
 	private String sku;
 	private Integer amount;
 	private String branchId;
-	private Double cost;
 
-	@Enumerated(EnumType.STRING)
-	private Status itemStatus;
+	@CreationTimestamp
+	private LocalDateTime timestamp;
 
-	public OrderItem(String sku, Integer amount, String branchId, Double cost) {
-		super();
+	public StockEvent(String sku, int amount, String branchId) {
 		this.sku = sku;
 		this.amount = amount;
 		this.branchId = branchId;
-		this.cost = cost;
 	}
-
 }
