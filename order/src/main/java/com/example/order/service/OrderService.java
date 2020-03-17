@@ -2,7 +2,6 @@ package com.example.order.service;
 
 import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -49,7 +48,6 @@ public class OrderService {
 		rabbitTemplate.convertAndSend(orderCreateQueue.getName(), order);
 		return order;
 	}
-
 	
 	public Order findById(String id) {
 		return orderRepository.findById(id).orElseThrow(() ->  new OrderNotFoundException(id));

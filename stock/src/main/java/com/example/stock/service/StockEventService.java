@@ -1,7 +1,6 @@
 package com.example.stock.service;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -56,7 +55,7 @@ public class StockEventService {
 		var stockMessageFailList = new ArrayList<StockMessage>();
 		order.getOrderItems().stream().forEach((s) -> {
 			var stockMessage = new StockMessage(s.getSku(), s.getAmount(), s.getBranchId(), order.getOrderId(),
-					s.getOrderItemId());
+									s.getOrderItemId());
 			try {
 				var stockEvent = new StockEvent(s.getSku(), -s.getAmount(), s.getBranchId());
 				logger.info("saving record {}", stockEvent);

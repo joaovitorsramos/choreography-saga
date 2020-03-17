@@ -67,11 +67,6 @@
 			<artifactId>junit</artifactId>
 			<scope>test</scope>
 		</dependency>
-		<dependency>
-			<groupId>com.example.projectSaga</groupId>
-    		<artifactId>stock-client</artifactId>
-    		<version>1.0.0</version>
-		</dependency>
 	</dependencies>
 
 	<build>
