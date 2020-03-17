@@ -28,7 +28,7 @@ public class OrderCreatedQueueConsumer {
 		try {
 			stockEventService.process(order);
 		} catch (UnexpectedRollbackException e) {
-			logger.info("There is not enough items of {} in stock to process this order",order);
+			logger.info("Transaction rolled-back because there is not enough items of {} in stock to process this order",order);
 		}
 
 	}
